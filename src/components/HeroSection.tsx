@@ -114,8 +114,11 @@ export function HeroSection({ onOpenStoreModal, onExplore }: HeroSectionProps) {
 
           <h1 className="hero-stagger font-display text-4xl font-semibold tracking-[-0.035em] text-white sm:text-6xl lg:text-[4.5rem] lg:leading-[1.03]">
             Everything you need.
-            <span className="block whitespace-nowrap bg-gradient-to-r from-[#38bdf8] via-[#06b6d4] to-[#a78bfa] bg-clip-text text-transparent">
-              One space.
+            <span className="block whitespace-nowrap mt-1 sm:mt-2">
+              <span className="text-[#06b6d4]">One</span>{' '}
+              <span className="bg-gradient-to-r from-[#38bdf8] via-[#818cf8] to-[#a78bfa] bg-clip-text text-transparent">
+                space.
+              </span>
             </span>
           </h1>
 
