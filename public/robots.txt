@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://aether-nexspace.vercel.app/sitemap.xml
