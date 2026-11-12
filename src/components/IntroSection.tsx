@@ -63,7 +63,7 @@ export function IntroSection() {
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
           <div className="intro-reveal lg:col-span-5">
             <p className="font-mono text-xs tracking-[0.18em] text-cyan-400 uppercase">
-              04 · Architectural Premise
+              05 · Architectural Premise
             </p>
             <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-[2.65rem] lg:leading-[1.1]">
               A calmer home for every web app you rely on.

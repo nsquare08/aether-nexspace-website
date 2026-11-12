@@ -14,7 +14,7 @@ export function FaqSection() {
       <div className="mx-auto max-w-4xl px-5 sm:px-8">
         <div>
           <p className="font-mono text-xs tracking-[0.18em] text-cyan-400 uppercase">
-            06 · Questions
+            07 · Questions
           </p>
           <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             Frequently asked questions

@@ -4,6 +4,7 @@ const OrbitalCanvas = lazy(() => import('./components/OrbitalCanvas'))
 import { Navbar } from './components/Navbar'
 import { HeroSection } from './components/HeroSection'
 import { IntroSection } from './components/IntroSection'
+import { ServicesEcosystemSection } from './components/ServicesEcosystemSection'
 import { CapabilitiesSection } from './components/CapabilitiesSection'
 import { ScrollStorySection } from './components/ScrollStorySection'
 import { PrivacySection } from './components/PrivacySection'
@@ -88,6 +89,7 @@ export function App() {
               onExplore={() => handleNavigate('/', '#story')}
             />
             <ScrollStorySection />
+            <ServicesEcosystemSection />
             <CapabilitiesSection />
             <IntroSection />
             <PrivacySection onOpenPrivacy={() => handleNavigate('/privacy')} />

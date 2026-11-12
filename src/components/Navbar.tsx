@@ -12,6 +12,7 @@ interface NavbarProps {
 
 const NAV_LINKS = [
   { label: 'Story', hash: '#story' },
+  { label: 'Ecosystem', hash: '#ecosystem' },
   { label: 'Capabilities', hash: '#capabilities' },
   { label: 'Overview', hash: '#intro' },
   { label: 'Privacy', hash: '#privacy' },
