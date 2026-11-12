@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { ArrowDown, Lock, Layers, Cpu, ShieldCheck, Sparkles } from 'lucide-react'
+import { ArrowDown, Layers, Cpu, ShieldCheck, Sparkles, UserCheck } from 'lucide-react'
 import { StoreCtaButton } from './StoreCtaButton'
 import { isStoreLive, STORE_CONFIG } from '../config/store'
 
@@ -12,8 +12,8 @@ interface HeroSectionProps {
 const HERO_TELEMETRY = [
   { icon: Layers, label: '38 Built-in Services' },
   { icon: ShieldCheck, label: 'Zero Tracking' },
+  { icon: UserCheck, label: 'No Account Required' },
   { icon: Cpu, label: 'Auto-Sleep RAM Engine' },
-  { icon: Lock, label: 'Windows DPAPI PIN' },
 ]
 
 export function HeroSection({ onOpenStoreModal, onExplore }: HeroSectionProps) {
