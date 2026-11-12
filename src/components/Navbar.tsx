@@ -11,10 +11,10 @@ interface NavbarProps {
 }
 
 const NAV_LINKS = [
-  { label: 'Overview', hash: '#intro' },
+  { label: 'Story', hash: '#story' },
   { label: 'Showcase', hash: '#showcase' },
   { label: 'Capabilities', hash: '#capabilities' },
-  { label: 'Story', hash: '#story' },
+  { label: 'Overview', hash: '#intro' },
   { label: 'Privacy', hash: '#privacy' },
   { label: 'FAQ', hash: '#faq' },
 ]

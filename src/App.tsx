@@ -86,12 +86,12 @@ export function App() {
           <main id="main-content" tabIndex={-1}>
             <HeroSection
               onOpenStoreModal={() => setStoreModalOpen(true)}
-              onExplore={() => handleNavigate('/', '#showcase')}
+              onExplore={() => handleNavigate('/', '#story')}
             />
-            <IntroSection />
+            <ScrollStorySection />
             <ShowcaseSection />
             <CapabilitiesSection />
-            <ScrollStorySection />
+            <IntroSection />
             <PrivacySection onOpenPrivacy={() => handleNavigate('/privacy')} />
             <DownloadSection onOpenStoreModal={() => setStoreModalOpen(true)} />
             <FaqSection />

@@ -57,7 +57,7 @@ export function ScrollStorySection() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="max-w-2xl">
           <p className="font-mono text-xs tracking-[0.18em] text-cyan-400 uppercase">
-            05 · Workspace Narrative
+            02 · Workspace Narrative
           </p>
           <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
             From tab chaos to spatial discipline.
