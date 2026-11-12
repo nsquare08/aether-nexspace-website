@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Aether Nexspace</title>
+<meta name="description" content="Aether Nexspace Privacy Policy: zero telemetry, zero user accounts, and no external NSquare servers. All application data remains locally on your Windows device.">
+<link rel="icon" href="/brand/icon-256.png">
+<style>
+  :root {
+    --bg: #050710;
+    --bg-2: #0c0d14;
+    --surface: #11131f;
+    --line: rgba(255, 255, 255, 0.08);
+    --ink: #f8fafc;
+    --ink-2: #cbd5e1;
+    --ink-3: #94a3b8;
+    --cyan: #38bdf8;
+    --violet: #7c3aed;
+    --gutter: clamp(20px, 6vw, 56px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink-2); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: var(--cyan); }
+  .wrap { max-width: 780px; margin: 0 auto; padding: clamp(40px, 8vw, 88px) var(--gutter) 80px; }
+  .top-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 32px; }
+  .back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-3); text-decoration: none; }
+  .back:hover { color: var(--ink); }
+  .lang-switch { display: inline-flex; gap: 4px; padding: 3px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-2); }
+  .lang-btn { border: 0; background: transparent; color: var(--ink-3); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; cursor: pointer; }
+  .lang-btn.active { background: #06b6d4; color: #050710; }
+  h1 { font-weight: 700; font-size: clamp(2rem, 5vw, 2.75rem); color: var(--ink); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 10px; }
+  .updated { font-size: 14px; color: var(--ink-3); margin-bottom: 32px; }
+  .callout { background: var(--bg-2); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 14px; padding: 22px 24px; margin-bottom: 36px; }
+  .callout p { color: var(--ink); font-size: 1rem; margin-bottom: 0; }
+  h2 { font-weight: 600; font-size: 1.25rem; color: var(--ink); margin: 34px 0 12px; letter-spacing: -0.015em; }
+  p { margin-bottom: 14px; }
+  ul { margin: 0 0 14px 20px; }
+  li { margin-bottom: 8px; }
+  code { font-family: ui-monospace, Consolas, monospace; font-size: 0.88em; background: var(--surface); padding: 2px 6px; border-radius: 5px; color: var(--ink-2); }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 15px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--ink); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  footer { border-top: 1px solid var(--line); margin-top: 48px; padding-top: 24px; font-size: 14px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top-row">
+    <a class="back" href="/">← Back to Aether Nexspace</a>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" class="lang-btn active" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="es">ES</button>
+    </div>
+  </div>
+
+  <div id="content-en">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: November 2026 · Aether Nexspace by NSquare</p>
+
+    <div class="callout">
+      <p><strong>Aether Nexspace collects zero personal data.</strong> There are no user accounts, no telemetry, no analytics SDKs, and no NSquare data-collection servers. Everything you store stays locally on your device.</p>
+    </div>
+
+    <h2>What Aether Nexspace Is</h2>
+    <p>Aether Nexspace is a Windows desktop application developed and published by NSquare that organizes web applications you choose (such as WhatsApp Web, Gmail, Telegram, Slack, Notion, and custom websites) into isolated workspaces within one window. Aether Nexspace does not inspect, log, or transmit the contents of those web sessions to NSquare.</p>
+
+    <h2>Data Stored Locally on Your Device</h2>
+    <p>All workspace and session data is stored exclusively inside the application's local user-data profile on your computer:</p>
+    <table>
+      <tr><th>Data Type</th><th>Purpose</th><th>Storage</th></tr>
+      <tr><td>App sessions (cookies, local storage, cache)</td><td>Keep you signed in across restarts</td><td>Your device, in an isolated Chromium partition per app</td></tr>
+      <tr><td>Workspaces, app list, icons, and preferences</td><td>Remember your layout and settings</td><td>Your device</td></tr>
+      <tr><td>Workspace lock PIN (if enabled)</td><td>Protect access to the workspace window</td><td>Your device, encrypted via Electron <code>safeStorage</code> / Windows DPAPI</td></tr>
+      <tr><td>Site permissions (camera, microphone, location)</td><td>Remember your per-origin permission choices</td><td>Your device</td></tr>
+    </table>
+    <p>All stored settings, PIN data, and local session files remain on your device and are never accessible to NSquare. Session cookies stored in a partition are sent only to the corresponding web service you choose to open.</p>
+
+    <h2>Network Connections</h2>
+    <p>Outside of the third-party web applications you explicitly open, the runtime only performs minimal operational checks when applicable:</p>
+    <ul>
+      <li><strong>Application updates</strong>: Standalone builds may check configured update metadata; Microsoft Store builds are updated exclusively through Microsoft Store.</li>
+      <li><strong>Spellcheck dictionaries</strong>: Chromium fetches standard spellcheck dictionaries if enabled.</li>
+    </ul>
+    <p>All traffic inside each workspace tab goes directly between your device and the web services you choose to open.</p>
+
+    <h2>Third-Party Services</h2>
+    <p>When you sign in to WhatsApp, Gmail, or any other website inside Aether Nexspace, that service's own privacy policy and terms govern how it handles your data. Aether Nexspace and NSquare are independent and are not affiliated with, sponsored by, or endorsed by those third-party services.</p>
+
+    <h2>Device Permissions</h2>
+    <p>Camera, microphone, geolocation, and screen-capture requests prompt once per site and can be reviewed or revoked anytime in <em>Settings → Site Permissions</em>. Direct hardware access APIs (USB, Serial, HID, and MIDI) are blocked by default.</p>
+
+    <h2>Children's Privacy</h2>
+    <p>Aether Nexspace is not directed at children under 13 and does not collect personal information from users of any age.</p>
+
+    <h2>Removing Your Data</h2>
+    <p>Uninstalling Aether Nexspace with user-data cleanup selected (or removing an individual app session inside Settings) deletes the stored sessions and local preferences from your device.</p>
+
+    <h2>Contact &amp; Updates</h2>
+    <p>Updates to this policy are published alongside the application documentation. For bug reports or privacy questions, use the in-app Settings diagnostics tools or NSquare's official distribution channels.</p>
+  </div>
+
+  <div id="content-es" style="display:none">
+    <h1>Política de privacidad</h1>
+    <p class="updated">Última actualización: noviembre de 2026 · Aether Nexspace por NSquare</p>
+
+    <div class="callout">
+      <p><strong>Aether Nexspace no recopila datos personales.</strong> No existen cuentas de usuario, telemetría, analítica ni servidores de NSquare que reciban tus datos. Todo permanece localmente en tu equipo.</p>
+    </div>
+
+    <h2>Qué es Aether Nexspace</h2>
+    <p>Aether Nexspace es una aplicación de escritorio para Windows desarrollada y publicada por NSquare que organiza aplicaciones web elegidas por ti (WhatsApp Web, Gmail, Telegram, Slack, Notion y sitios personalizados) dentro de una sola ventana con espacios aislados. Aether Nexspace no lee ni envía el contenido de tus sesiones a NSquare.</p>
+
+    <h2>Datos almacenados en tu equipo</h2>
+    <p>Toda la configuración y sesiones se guardan exclusivamente en la carpeta local del perfil de la aplicación en tu equipo:</p>
+    <table>
+      <tr><th>Dato</th><th>Finalidad</th><th>Ubicación</th></tr>
+      <tr><td>Sesiones de apps (cookies, almacenamiento local, caché)</td><td>Mantener tu sesión iniciada</td><td>Tu equipo, en una partición aislada por aplicación</td></tr>
+      <tr><td>Espacios de trabajo, apps, íconos y ajustes</td><td>Recordar tu organización</td><td>Tu equipo</td></tr>
+      <tr><td>PIN de bloqueo (si está activado)</td><td>Proteger el acceso a la ventana</td><td>Tu equipo, cifrado con Electron <code>safeStorage</code> / Windows DPAPI</td></tr>
+      <tr><td>Permisos por sitio (cámara, micrófono, ubicación)</td><td>Recordar tus decisiones por origen</td><td>Tu equipo</td></tr>
+    </table>
+    <p>Toda tu configuración, PIN y archivos locales permanecen en tu equipo y nunca son accesibles para NSquare. Las cookies guardadas en una partición se envían únicamente al servicio web correspondiente cuando lo abres.</p>
+
+    <h2>Conexiones de red</h2>
+    <ul>
+      <li><strong>Actualizaciones</strong>: Las compilaciones independientes pueden consultar metadatos de actualización; las versiones de Microsoft Store se actualizan exclusivamente mediante la tienda.</li>
+      <li><strong>Diccionarios ortográficos</strong>: Chromium descarga diccionarios estándar si el corrector está habilitado.</li>
+    </ul>
+
+    <h2>Servicios de terceros</h2>
+    <p>Los servicios web que abres dentro de Aether Nexspace se rigen por sus propias políticas de privacidad. Aether Nexspace y NSquare son independientes y no están afiliados ni respaldados por dichos servicios.</p>
+
+    <h2>Permisos del dispositivo</h2>
+    <p>Los permisos de cámara, micrófono, ubicación y captura de pantalla se solicitan por sitio y pueden revocarse en <em>Configuración → Permisos de sitios</em>. Las APIs USB, Serial, HID y MIDI permanecen bloqueadas.</p>
+
+    <h2>Menores de edad</h2>
+    <p>Aether Nexspace no está dirigido a menores de 13 años y no recopila información personal de usuarios de ninguna edad.</p>
+
+    <h2>Eliminación de datos</h2>
+    <p>Desinstalar Aether Nexspace seleccionando la limpieza de datos de usuario (o borrar una sesión concreta desde Configuración) elimina tus sesiones y preferencias locales.</p>
+
+    <h2>Contacto y actualizaciones</h2>
+    <p>Las actualizaciones de esta política se publican junto con la documentación de la aplicación. Para reportar errores o consultar sobre privacidad, utiliza las herramientas de diagnóstico en Configuración o los canales oficiales de distribución de NSquare.</p>
+  </div>
+
+  <footer>© 2026 NSquare · Aether Nexspace</footer>
+</div>
+
+<script>
+const backLabels = { en: '← Back to Aether Nexspace', es: '← Volver a Aether Nexspace' };
+function applyPrivacyLang(lang) {
+  const targetLang = lang === 'es' ? 'es' : 'en';
+  document.documentElement.lang = targetLang;
+  document.getElementById('content-en').style.display = targetLang === 'en' ? '' : 'none';
+  document.getElementById('content-es').style.display = targetLang === 'es' ? '' : 'none';
+  document.querySelector('.back').textContent = backLabels[targetLang];
+  document.querySelectorAll('.lang-btn').forEach((b) => b.classList.toggle('active', b.dataset.lang === targetLang));
+}
+document.querySelectorAll('.lang-btn').forEach((btn) => btn.addEventListener('click', () => applyPrivacyLang(btn.dataset.lang)));
+if (new URLSearchParams(window.location.search).get('lang') === 'es') applyPrivacyLang('es');
+</script>
+</body>
+</html>
