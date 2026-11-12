@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { ArrowDown, Lock, Layers, Cpu, Sparkles } from 'lucide-react'
+import { ArrowDown, Lock, Layers, Cpu, ShieldCheck, Sparkles } from 'lucide-react'
 import { StoreCtaButton } from './StoreCtaButton'
-import { getStoreBadgeLabel, STORE_CONFIG } from '../config/store'
+import { isStoreLive, STORE_CONFIG } from '../config/store'
 
 interface HeroSectionProps {
   onOpenStoreModal: () => void
@@ -13,6 +13,7 @@ const HERO_TELEMETRY = [
   { icon: Layers, label: '38 Built-in Services' },
   { icon: Cpu, label: 'Auto-Sleep RAM Engine' },
   { icon: Lock, label: 'Windows DPAPI PIN' },
+  { icon: ShieldCheck, label: 'Zero Tracking' },
 ]
 
 export function HeroSection({ onOpenStoreModal, onExplore }: HeroSectionProps) {
@@ -101,21 +102,25 @@ export function HeroSection({ onOpenStoreModal, onExplore }: HeroSectionProps) {
             <span className="font-mono text-[11px] tracking-[0.12em] text-cyan-300 uppercase">
               Windows 10 &amp; 11 · v{STORE_CONFIG.PRODUCT_VERSION}
             </span>
-            <span className="h-3 w-px bg-white/15" aria-hidden="true" />
-            <span className="font-mono text-[11px] text-slate-300">
-              {getStoreBadgeLabel()}
-            </span>
+            {isStoreLive() && (
+              <>
+                <span className="h-3 w-px bg-white/15" aria-hidden="true" />
+                <span className="font-mono text-[11px] text-slate-300">
+                  Available on Microsoft Store
+                </span>
+              </>
+            )}
           </div>
 
           <h1 className="hero-stagger font-display text-4xl font-semibold tracking-[-0.035em] text-white sm:text-6xl lg:text-[4.5rem] lg:leading-[1.03]">
-            Your digital world.{' '}
+            Everything you need.{' '}
             <span className="bg-gradient-to-r from-[#38bdf8] via-[#06b6d4] to-[#a78bfa] bg-clip-text text-transparent">
               One space.
             </span>
           </h1>
 
           <p className="hero-stagger mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
-            Bring your everyday digital services together in one beautifully organized desktop workspace.
+            Bring your apps, services, and everyday digital essentials together in one unified desktop workspace.
           </p>
 
           <div className="hero-stagger mt-9 flex flex-col items-center justify-center gap-3.5 sm:flex-row">

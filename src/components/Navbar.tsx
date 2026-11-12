@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { StoreCtaButton } from './StoreCtaButton'
-import { getStoreBadgeLabel, isStoreLive } from '../config/store'
+import { isStoreLive } from '../config/store'
 
 interface NavbarProps {
   currentPath: string
@@ -96,20 +96,12 @@ export function Navbar({ currentPath, onNavigate, onOpenStoreModal }: NavbarProp
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] ${
-              isStoreLive()
-                ? 'border-emerald-400/30 bg-emerald-500/10 text-emerald-300'
-                : 'border-white/10 bg-white/[0.03] text-slate-300'
-            }`}
-          >
-            <span
-              className={`h-1.5 w-1.5 rounded-full ${
-                isStoreLive() ? 'bg-emerald-400' : 'bg-cyan-400 animate-pulse'
-              }`}
-            />
-            {isStoreLive() ? 'Microsoft Store' : getStoreBadgeLabel()}
-          </span>
+          {isStoreLive() && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2.5 py-1 font-mono text-[11px] text-emerald-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Microsoft Store
+            </span>
+          )}
           <StoreCtaButton variant="nav" onOpenComingSoon={onOpenStoreModal} />
         </div>
 
@@ -162,7 +154,6 @@ export function Navbar({ currentPath, onNavigate, onOpenStoreModal }: NavbarProp
               </a>
             </nav>
             <div className="mt-4 border-t border-white/10 pt-4">
-              <p className="mb-3 font-mono text-[11px] text-slate-400">{getStoreBadgeLabel()}</p>
               <StoreCtaButton
                 onOpenComingSoon={() => {
                   setMobileOpen(false)
