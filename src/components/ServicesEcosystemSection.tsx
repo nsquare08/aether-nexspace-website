@@ -8,7 +8,6 @@ import {
   Code2,
   Tv,
   Zap,
-  CheckCircle2,
   Sparkles,
 } from 'lucide-react'
 import { SERVICE_CATEGORY_GROUPS } from '../data/aetherContent'
@@ -18,6 +17,13 @@ interface ServiceItem {
   name: string
   category: string
   icon: string
+  summary: string
+  runtime: string
+}
+
+interface ServiceDetails {
+  summary: string
+  runtime: string
 }
 
 const SERVICE_ICONS: Record<string, string> = {
@@ -61,6 +67,161 @@ const SERVICE_ICONS: Record<string, string> = {
   Flipkart: '/icons/apps/flipkart.png',
 }
 
+const SERVICE_DETAILS: Record<string, ServiceDetails> = {
+  WhatsApp: {
+    summary: 'End-to-end encrypted messaging, voice calls, and media sharing on desktop.',
+    runtime: 'Isolated Chromium partition (persist:whatsapp) with persistent session login and zero cross-app tracking.',
+  },
+  Telegram: {
+    summary: 'Cloud-based real-time messaging, channels, supergroups, and large file transfers.',
+    runtime: 'Dedicated sandbox session (persist:telegram) running with background audio support and isolated storage.',
+  },
+  Discord: {
+    summary: 'Voice, video, and text communication platform for communities and gaming.',
+    runtime: 'Isolated renderer instance (persist:discord) preserving server navigation and unread state without telemetry bleed.',
+  },
+  Slack: {
+    summary: 'Enterprise team collaboration, organized workspace channels, and direct messaging.',
+    runtime: 'Multi-account compatible sandbox (persist:slack) with discrete authentication tokens and notification routing.',
+  },
+  'Microsoft Teams': {
+    summary: 'Workplace video meetings, threaded conversations, and document collaboration.',
+    runtime: 'Sandboxed partition (persist:microsoftteams) supporting enterprise single sign-on with independent cookies.',
+  },
+  Signal: {
+    summary: 'Privacy-centric encrypted messaging focused on secure communications.',
+    runtime: 'Dedicated partition sandbox (persist:signal) running in complete isolation from advertising cookies.',
+  },
+  Snapchat: {
+    summary: 'Photo and video messaging, interactive AR lenses, and stories on the web.',
+    runtime: 'Sandboxed web runtime (persist:snapchat) retaining camera/microphone permissions locally on device.',
+  },
+  'Google Meet': {
+    summary: 'Enterprise-grade high-definition video conferencing and real-time screen sharing.',
+    runtime: 'Hardware-accelerated Chromium view (persist:googlemeet) with isolated WebRTC audio/video device routing.',
+  },
+  Zoom: {
+    summary: 'Virtual meeting rooms, collaborative webinars, and group screen sharing.',
+    runtime: 'Isolated web view (persist:zoom) preventing tracking cookies from traversing other workplace apps.',
+  },
+  Gmail: {
+    summary: 'Fast, secure email client with smart search, priority inbox, and spam protection.',
+    runtime: 'Independent partition (persist:gmail) supporting multi-account logins side-by-side with zero session bleed.',
+  },
+  Outlook: {
+    summary: 'Microsoft enterprise email, calendar scheduling, and contact management.',
+    runtime: 'Partitioned session (persist:microsoftoutlook) maintaining Microsoft 365 credentials without global browser lock-in.',
+  },
+  ProtonMail: {
+    summary: 'Swiss-based zero-access encrypted email engineered for uncompromising privacy.',
+    runtime: 'Hermetic sandbox partition (persist:protonmail) with client-side cryptographic key storage preserved on disk.',
+  },
+  Notion: {
+    summary: 'Connected all-in-one workspace for wikis, docs, databases, and project notes.',
+    runtime: 'Offline-resilient partition (persist:notion) with local IndexedDB cache retention and seamless fast-switch.',
+  },
+  'Google Drive': {
+    summary: 'Cloud file storage, synchronization, document previewing, and asset sharing.',
+    runtime: 'Isolated partition (persist:googledrive) maintaining Google Workspace file access without cross-origin trackers.',
+  },
+  'Google Calendar': {
+    summary: 'Time management, meeting scheduling, smart agendas, and event notifications.',
+    runtime: 'Low-overhead partition (persist:googlecalendar) waking instantly for meeting alerts while sleeping during inactivity.',
+  },
+  Trello: {
+    summary: 'Visual Kanban boards, sprint lists, and collaborative workflow card management.',
+    runtime: 'Isolated partition (persist:trello) retaining board states and drag-and-drop caching with zero data leakage.',
+  },
+  Todoist: {
+    summary: 'Intuitive task management, daily planning, recurring reminders, and productivity tracking.',
+    runtime: 'Lightweight sandbox (persist:todoist) that suspends into low-RAM state while keeping task sync alive.',
+  },
+  Linear: {
+    summary: 'High-speed issue tracking, sprint cycles, and roadmap planning built for modern teams.',
+    runtime: 'High-performance Chromium partition (persist:linear) with snappy keyboard shortcut forwarding.',
+  },
+  Jira: {
+    summary: 'Agile project tracking, scrum boards, bug reporting, and sprint release cycles.',
+    runtime: 'Isolated enterprise session (persist:jira) caching Atlassian Cloud dashboards without slowing other workspace views.',
+  },
+  OneDrive: {
+    summary: 'Microsoft cloud file storage, shared folder access, and document synchronization.',
+    runtime: 'Secure partition (persist:onedrive) with isolated Microsoft identity tokens and seamless file retrieval.',
+  },
+  ChatGPT: {
+    summary: 'OpenAI generative conversational intelligence for reasoning, coding, and drafting.',
+    runtime: 'Isolated sandbox partition (persist:chatgpt) maintaining authenticated sessions with zero third-party cookie access.',
+  },
+  Claude: {
+    summary: 'Anthropic advanced AI assistant tailored for deep technical analysis, writing, and code.',
+    runtime: 'Private Chromium partition (persist:claude) keeping large context conversations securely cached locally.',
+  },
+  Gemini: {
+    summary: 'Google multimodal AI assistant for multi-turn reasoning, coding, and research.',
+    runtime: 'Isolated partition (persist:gemini) maintaining persistent Google AI sessions with zero cross-app tracking.',
+  },
+  GitHub: {
+    summary: 'Git version control hosting, pull request code review, issues, and developer CI/CD.',
+    runtime: 'Dedicated partition (persist:github) holding GitHub 2FA credentials securely with isolated local tokens.',
+  },
+  GitLab: {
+    summary: 'Unified DevOps lifecycle, private Git repository hosting, and automated CI pipelines.',
+    runtime: 'Sandboxed partition (persist:gitlab) with isolated session tokens and safe WebContents shortcut handling.',
+  },
+  Figma: {
+    summary: 'Cloud-native collaborative interface design, vector prototyping, and design systems.',
+    runtime: 'GPU-accelerated WebGL view (persist:figma) maintaining complex canvas states with dedicated memory caps.',
+  },
+  Miro: {
+    summary: 'Infinite collaborative visual canvas for diagramming, brainstorming, and wireframes.',
+    runtime: 'Isolated partition (persist:miro) allocating dedicated graphics acceleration without impacting desktop stability.',
+  },
+  YouTube: {
+    summary: 'Global video streaming platform, subscribed channels, creator playlists, and livestreams.',
+    runtime: 'Sandboxed media container (persist:youtube) supporting PiP and background audio with automatic inactivity throttling.',
+  },
+  Spotify: {
+    summary: 'Digital music and podcast streaming service with personalized algorithmic mixes.',
+    runtime: 'Background audio runtime (persist:spotify) retaining media keys while exempting playback from sleep timers.',
+  },
+  'YouTube Music': {
+    summary: 'Music streaming platform featuring official tracks, albums, live performances, and mixes.',
+    runtime: 'Audio-optimized sandbox (persist:youtubemusic) supporting continuous background playback with media keys.',
+  },
+  Instagram: {
+    summary: 'Visual media sharing, reels, stories, direct messages, and creator profiles.',
+    runtime: 'Isolated partition (persist:instagram) containing Meta trackers entirely within its own sandbox.',
+  },
+  X: {
+    summary: 'Real-time global news, breaking discussions, community feeds, and short-form posts.',
+    runtime: 'Sandboxed container (persist:x) preventing tracking pixels from correlating browsing habits across other tabs.',
+  },
+  LinkedIn: {
+    summary: 'Professional networking, career development, industry news, and recruitment messaging.',
+    runtime: 'Isolated workplace session (persist:linkedin) preserving business connections without ad network cross-talk.',
+  },
+  Reddit: {
+    summary: 'Network of community forums, niche discussions, topic-based feeds, and upvoted content.',
+    runtime: 'Isolated partition (persist:reddit) maintaining subreddit preferences and dark mode cache locally.',
+  },
+  Facebook: {
+    summary: 'Social networking platform connecting groups, pages, marketplace, and messaging.',
+    runtime: 'Hermetic storage partition (persist:facebook) trapping social graph tracking within a strictly isolated sandbox.',
+  },
+  Pinterest: {
+    summary: 'Visual discovery engine, inspirational moodboards, recipe collections, and design pins.',
+    runtime: 'Sandboxed partition (persist:pinterest) with local asset caching and zero third-party cookie propagation.',
+  },
+  DuckDuckGo: {
+    summary: 'Privacy-respecting search engine that avoids profiling, tracking, or personalized ad targeting.',
+    runtime: 'Private search partition (persist:duckduckgo) clearing transient web caches on app close.',
+  },
+  Flipkart: {
+    summary: 'E-commerce marketplace for electronics, fashion, lifestyle products, and everyday essentials.',
+    runtime: 'Secure shopping partition (persist:flipkart) isolating payment sessions and shopping cart cookies.',
+  },
+}
+
 const CATEGORY_META = {
   All: { label: 'All Services', count: 38, icon: Globe },
   'Messaging & Meetings': { label: 'Messaging', count: 9, icon: MessageSquare },
@@ -70,11 +231,19 @@ const CATEGORY_META = {
 }
 
 const ALL_SERVICES: ServiceItem[] = SERVICE_CATEGORY_GROUPS.flatMap((group) => {
-  return group.services.map((svc) => ({
-    name: svc,
-    category: group.category,
-    icon: SERVICE_ICONS[svc] || '/brand/icon-256.png',
-  }))
+  return group.services.map((svc) => {
+    const details = SERVICE_DETAILS[svc] || {
+      summary: `${svc} cloud application.`,
+      runtime: `Isolated Chromium storage partition (persist:${svc.toLowerCase().replace(/\s+/g, '')}) with zero cross-app tracking.`,
+    }
+    return {
+      name: svc,
+      category: group.category,
+      icon: SERVICE_ICONS[svc] || '/brand/icon-256.png',
+      summary: details.summary,
+      runtime: details.runtime,
+    }
+  })
 })
 
 interface ShortcutItem {
@@ -307,18 +476,24 @@ export function ServicesEcosystemSection() {
                 </div>
               </div>
 
-              {/* Minimalist Partition Info Sheet on Click */}
+              {/* Minimalist Partition Info Sheet on Click with clear top margin */}
               <AnimatePresence mode="wait">
                 {selectedService && (
                   <motion.div
                     initial={{ opacity: 0, height: 0, y: 6 }}
                     animate={{ opacity: 1, height: 'auto', y: 0 }}
                     exit={{ opacity: 0, height: 0, y: 6 }}
-                    className="overflow-hidden rounded-xl border border-cyan-400/30 bg-gradient-to-r from-cyan-950/40 via-[#0a1120] to-[#0c0d18] p-3.5 text-xs"
+                    className="mt-5 overflow-hidden rounded-xl border border-cyan-400/30 bg-gradient-to-r from-cyan-950/40 via-[#0a1120] to-[#0c0d18] p-4 text-xs shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-cyan-400" />
+                    <div className="flex items-center justify-between border-b border-white/[0.08] pb-2.5">
+                      <div className="flex items-center gap-2.5">
+                        <img
+                          src={selectedService.icon}
+                          alt=""
+                          width={18}
+                          height={18}
+                          className="h-4.5 w-4.5 rounded object-contain shrink-0"
+                        />
                         <span className="font-display font-semibold text-white">
                           {selectedService.name} Partition
                         </span>
@@ -327,9 +502,15 @@ export function ServicesEcosystemSection() {
                         {selectedService.category}
                       </span>
                     </div>
-                    <p className="mt-1.5 text-slate-300 leading-relaxed text-[11px]">
-                      Isolated Chromium storage partition (<code className="text-cyan-300">persist:{selectedService.name.toLowerCase()}</code>) with local-first session preservation and zero cross-app tracking.
-                    </p>
+
+                    <div className="mt-2.5 space-y-1.5">
+                      <p className="text-[12px] font-medium text-slate-200 leading-snug">
+                        {selectedService.summary}
+                      </p>
+                      <p className="text-[11px] text-slate-400 leading-relaxed font-mono">
+                        {selectedService.runtime}
+                      </p>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>

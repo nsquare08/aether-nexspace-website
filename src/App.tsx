@@ -14,6 +14,7 @@ import { FinalCtaSection } from './components/FinalCtaSection'
 import { Footer } from './components/Footer'
 import { StoreStatusModal } from './components/StoreStatusModal'
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage'
+import { BackToTop } from './components/BackToTop'
 
 export function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname || '/')
@@ -106,6 +107,8 @@ export function App() {
           onClose={() => setStoreModalOpen(false)}
           onOpenPrivacy={() => handleNavigate('/privacy')}
         />
+
+        <BackToTop />
       </div>
     </MotionConfig>
   )
