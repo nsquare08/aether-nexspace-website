@@ -16,7 +16,7 @@ export function PrivacySection({ onOpenPrivacy }: PrivacySectionProps) {
           <div className="lg:col-span-5">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] text-emerald-300">
               <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>06 · Privacy &amp; Trust</span>
+              <span>05 · Privacy &amp; Trust</span>
             </div>
 
             <h2 className="mt-5 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">

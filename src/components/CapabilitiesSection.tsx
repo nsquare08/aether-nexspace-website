@@ -27,7 +27,7 @@ export function CapabilitiesSection() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="max-w-3xl">
           <p className="font-mono text-xs tracking-[0.18em] text-cyan-400 uppercase">
-            04 · Verified Capabilities
+            03 · Verified Capabilities
           </p>
           <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
             Engineered as desktop infrastructure, not another wrapper.
