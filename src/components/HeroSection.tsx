@@ -11,9 +11,9 @@ interface HeroSectionProps {
 
 const HERO_TELEMETRY = [
   { icon: Layers, label: '38 Built-in Services' },
+  { icon: ShieldCheck, label: 'Zero Tracking' },
   { icon: Cpu, label: 'Auto-Sleep RAM Engine' },
   { icon: Lock, label: 'Windows DPAPI PIN' },
-  { icon: ShieldCheck, label: 'Zero Tracking' },
 ]
 
 export function HeroSection({ onOpenStoreModal, onExplore }: HeroSectionProps) {
