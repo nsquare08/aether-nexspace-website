@@ -41,6 +41,8 @@ export function StoreCtaButton({
     }
   }
 
+  const iconSize = variant === 'nav' ? 'h-4.5 w-4.5 shrink-0' : 'h-5 w-5 shrink-0'
+
   if (live) {
     return (
       <a
@@ -50,7 +52,7 @@ export function StoreCtaButton({
         onClick={handleStoreClick}
         className={`${baseStyles} ${className}`.trim()}
       >
-        <MicrosoftStoreIcon className="h-4 w-4 shrink-0" />
+        <MicrosoftStoreIcon className={iconSize} />
         <span>{label}</span>
         <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
       </a>
@@ -63,7 +65,7 @@ export function StoreCtaButton({
       onClick={onOpenComingSoon}
       className={`${baseStyles} cursor-pointer ${className}`.trim()}
     >
-      <MicrosoftStoreIcon className="h-4 w-4 shrink-0" />
+      <MicrosoftStoreIcon className={iconSize} />
       <span>{label}</span>
     </button>
   )
