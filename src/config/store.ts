@@ -2,20 +2,21 @@ export type StoreStatus = 'coming_soon' | 'live'
 
 export interface StoreConfig {
   readonly STORE_URL: string
+  readonly STORE_APP_URI: string
   readonly STORE_STATUS: StoreStatus
   readonly PRODUCT_VERSION: string
+  readonly PRODUCT_ID: string
 }
 
 /**
  * Centralized Microsoft Store release configuration.
- * Once Microsoft Store certification completes:
- * 1. Set STORE_URL to the official apps.microsoft.com product listing URL.
- * 2. Change STORE_STATUS from 'coming_soon' to 'live'.
  */
 export const STORE_CONFIG: StoreConfig = {
-  STORE_URL: '',
-  STORE_STATUS: 'coming_soon',
+  STORE_URL: 'https://apps.microsoft.com/detail/9pmxkc79jqpc',
+  STORE_APP_URI: 'ms-windows-store://pdp/?productid=9pmxkc79jqpc',
+  STORE_STATUS: 'live',
   PRODUCT_VERSION: '1.0.0',
+  PRODUCT_ID: '9PMXKC79JQPC',
 }
 
 export function isStoreLive(): boolean {

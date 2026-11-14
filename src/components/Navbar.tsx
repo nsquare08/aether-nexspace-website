@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { StoreCtaButton } from './StoreCtaButton'
-import { isStoreLive } from '../config/store'
 
 interface NavbarProps {
   currentPath: string
@@ -96,12 +95,6 @@ export function Navbar({ currentPath, onNavigate, onOpenStoreModal }: NavbarProp
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          {isStoreLive() && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2.5 py-1 font-mono text-[11px] text-emerald-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Microsoft Store
-            </span>
-          )}
           <StoreCtaButton variant="nav" onOpenComingSoon={onOpenStoreModal} />
         </div>
 
