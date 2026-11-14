@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
 import {
   Sparkles,
   Layers,
@@ -141,8 +142,19 @@ export function IntroSection() {
         {/* ================================================================
             ACT I: INTERACTIVE REALITY COMPARISON (Browser Chaos vs Aether Nexus)
            ================================================================ */}
-        <div className="mt-16 rounded-2xl border border-white/[0.1] bg-[#070b16]/90 p-6 shadow-[0_24px_60px_rgba(0,0,0,0.6)] sm:p-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/[0.08] pb-6">
+        <div className="relative mt-16 overflow-hidden rounded-2xl border border-white/[0.1] bg-[#070b16]/90 p-6 shadow-[0_24px_60px_rgba(0,0,0,0.6)] sm:p-8 transition-colors duration-500">
+          {/* Ambient dynamic atmospheric glow */}
+          <div
+            aria-hidden="true"
+            className={cn(
+              'pointer-events-none absolute -top-24 right-1/4 h-64 w-96 rounded-full blur-3xl transition-opacity duration-700',
+              realityMode === 'aether'
+                ? 'bg-cyan-500/10 opacity-100'
+                : 'bg-rose-500/10 opacity-100'
+            )}
+          />
+
+          <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/[0.08] pb-6">
             <div>
               <span className="font-mono text-xs tracking-wider text-cyan-400 uppercase">
                 Act I · The Paradigm Shift
@@ -152,67 +164,137 @@ export function IntroSection() {
               </h3>
             </div>
 
-            {/* Mode Toggle Switcher */}
-            <div className="inline-flex rounded-xl border border-white/10 bg-[#0c101e] p-1">
+            {/* Mode Toggle Switcher with Animated Sliding Pill */}
+            <div className="relative inline-flex rounded-xl border border-white/10 bg-[#0c101e] p-1 shadow-inner">
               <button
                 type="button"
                 onClick={() => setRealityMode('browser')}
-                className={cn(
-                  'cursor-pointer rounded-lg px-4 py-2 font-mono text-xs transition duration-200',
-                  realityMode === 'browser'
-                    ? 'border border-rose-500/40 bg-rose-500/20 text-rose-200 font-semibold'
-                    : 'text-slate-400 hover:text-slate-200'
-                )}
+                className="relative z-10 cursor-pointer rounded-lg px-4 py-2 font-mono text-xs font-semibold transition-colors duration-200"
+                style={{ color: realityMode === 'browser' ? '#fecdd3' : '#94a3b8' }}
               >
-                Browser Chaos
+                {realityMode === 'browser' && (
+                  <motion.span
+                    layoutId="reality-mode-indicator"
+                    className="absolute inset-0 rounded-lg border border-rose-500/50 bg-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.3)]"
+                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                  />
+                )}
+                <span className="relative z-10">Browser Chaos</span>
               </button>
               <button
                 type="button"
                 onClick={() => setRealityMode('aether')}
-                className={cn(
-                  'cursor-pointer rounded-lg px-4 py-2 font-mono text-xs transition duration-200',
-                  realityMode === 'aether'
-                    ? 'border border-cyan-400/50 bg-cyan-500/20 text-cyan-200 font-semibold shadow-[0_0_15px_rgba(6,182,212,0.3)]'
-                    : 'text-slate-400 hover:text-slate-200'
-                )}
+                className="relative z-10 cursor-pointer rounded-lg px-4 py-2 font-mono text-xs font-semibold transition-colors duration-200"
+                style={{ color: realityMode === 'aether' ? '#a5f3fc' : '#94a3b8' }}
               >
-                Aether Nexspace
+                {realityMode === 'aether' && (
+                  <motion.span
+                    layoutId="reality-mode-indicator"
+                    className="absolute inset-0 rounded-lg border border-cyan-400/60 bg-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.35)]"
+                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                  />
+                )}
+                <span className="relative z-10">Aether Nexspace</span>
               </button>
             </div>
           </div>
 
           {/* Interactive Metric Comparison Cards */}
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {COMPARISONS.map((comp) => (
-              <div
+          <div className="relative z-10 mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {COMPARISONS.map((comp, idx) => (
+              <motion.div
                 key={comp.metric}
-                className={cn(
-                  'rounded-xl border p-4.5 transition-all duration-300',
-                  realityMode === 'aether'
-                    ? 'border-cyan-400/30 bg-[#0a1224]/80 shadow-[0_0_20px_rgba(6,182,212,0.1)]'
-                    : 'border-rose-500/20 bg-[#160a12]/60'
-                )}
+                initial={false}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                animate={{
+                  borderColor:
+                    realityMode === 'aether'
+                      ? 'rgba(34, 211, 238, 0.35)'
+                      : 'rgba(244, 63, 94, 0.25)',
+                  backgroundColor:
+                    realityMode === 'aether'
+                      ? 'rgba(10, 18, 36, 0.85)'
+                      : 'rgba(22, 10, 18, 0.65)',
+                  boxShadow:
+                    realityMode === 'aether'
+                      ? '0 0 25px rgba(6, 182, 212, 0.12)'
+                      : '0 0 20px rgba(244, 63, 94, 0.06)',
+                }}
+                transition={{ duration: 0.3, delay: idx * 0.03 }}
+                className="relative overflow-hidden rounded-xl border p-4.5 transition-shadow"
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                    {comp.metric}
-                  </span>
-                  {realityMode === 'aether' ? (
-                    <Check className="h-4 w-4 text-cyan-400" />
-                  ) : (
-                    <X className="h-4 w-4 text-rose-400" />
+                {/* Top illuminated subtle border accent */}
+                <div
+                  className={cn(
+                    'absolute top-0 left-0 right-0 h-[2px] transition-all duration-500',
+                    realityMode === 'aether'
+                      ? 'bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80'
+                      : 'bg-gradient-to-r from-transparent via-rose-500/60 to-transparent opacity-50'
                   )}
+                />
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={cn(
+                        'h-1.5 w-1.5 rounded-full transition-colors duration-300',
+                        realityMode === 'aether'
+                          ? 'bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-pulse'
+                          : 'bg-rose-400/70'
+                      )}
+                    />
+                    <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                      {comp.metric}
+                    </span>
+                  </div>
+
+                  {/* Morphing status icon */}
+                  <AnimatePresence mode="wait" initial={false}>
+                    {realityMode === 'aether' ? (
+                      <motion.div
+                        key="check"
+                        initial={{ scale: 0, rotate: -45, opacity: 0 }}
+                        animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                        exit={{ scale: 0, rotate: 45, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                        className="rounded-full bg-cyan-400/10 p-1 text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.3)]"
+                      >
+                        <Check className="h-3.5 w-3.5 stroke-[2.5]" />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="cross"
+                        initial={{ scale: 0, rotate: 45, opacity: 0 }}
+                        animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                        exit={{ scale: 0, rotate: -45, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                        className="rounded-full bg-rose-500/10 p-1 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.2)]"
+                      >
+                        <X className="h-3.5 w-3.5 stroke-[2.5]" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
-                <p
-                  className={cn(
-                    'mt-3 text-xs leading-relaxed transition-colors',
-                    realityMode === 'aether' ? 'text-slate-200 font-medium' : 'text-rose-200/80 line-through opacity-80'
-                  )}
-                >
-                  {realityMode === 'aether' ? comp.after : comp.before}
-                </p>
-              </div>
+                {/* Animated description text */}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.p
+                    key={realityMode}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                    className={cn(
+                      'mt-3 min-h-[42px] text-xs leading-relaxed transition-colors',
+                      realityMode === 'aether'
+                        ? 'text-slate-200 font-medium'
+                        : 'text-rose-200/80 line-through opacity-80'
+                    )}
+                  >
+                    {realityMode === 'aether' ? comp.after : comp.before}
+                  </motion.p>
+                </AnimatePresence>
+              </motion.div>
             ))}
           </div>
         </div>
