@@ -1,5 +1,6 @@
-import { ArrowUpRight, Monitor } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { isStoreLive, STORE_CONFIG } from '../config/store'
+import { MicrosoftStoreIcon } from './MicrosoftStoreIcon'
 
 interface StoreCtaButtonProps {
   onOpenComingSoon?: () => void
@@ -12,7 +13,7 @@ export function StoreCtaButton({
   onOpenComingSoon,
   variant = 'primary',
   className = '',
-  label = 'Download from Ms Store',
+  label = 'Download From Store',
 }: StoreCtaButtonProps) {
   const live = isStoreLive()
 
@@ -49,7 +50,7 @@ export function StoreCtaButton({
         onClick={handleStoreClick}
         className={`${baseStyles} ${className}`.trim()}
       >
-        <Monitor className="h-4 w-4 shrink-0" aria-hidden="true" />
+        <MicrosoftStoreIcon className="h-4 w-4 shrink-0" />
         <span>{label}</span>
         <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
       </a>
@@ -62,7 +63,7 @@ export function StoreCtaButton({
       onClick={onOpenComingSoon}
       className={`${baseStyles} cursor-pointer ${className}`.trim()}
     >
-      <Monitor className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <MicrosoftStoreIcon className="h-4 w-4 shrink-0" />
       <span>{label}</span>
     </button>
   )
