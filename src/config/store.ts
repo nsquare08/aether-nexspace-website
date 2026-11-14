@@ -15,7 +15,7 @@ export const STORE_CONFIG: StoreConfig = {
   STORE_URL: 'https://apps.microsoft.com/detail/9pmxkc79jqpc',
   STORE_APP_URI: 'ms-windows-store://pdp/?productid=9pmxkc79jqpc',
   STORE_STATUS: 'live',
-  PRODUCT_VERSION: '1.0.0',
+  PRODUCT_VERSION: '1.0.1',
   PRODUCT_ID: '9PMXKC79JQPC',
 }
 

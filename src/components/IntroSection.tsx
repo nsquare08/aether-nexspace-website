@@ -10,6 +10,7 @@ import {
   Lock,
 } from 'lucide-react'
 import { cn } from '../lib/utils'
+import { STORE_CONFIG } from '../config/store'
 
 // ============================================================================
 // ARCHITECTURAL EXPLODED LAYERS DATA
@@ -283,7 +284,7 @@ export function IntroSection() {
                   </span>
                   <span className="font-mono text-xs text-slate-400">{activeLayer.badge}</span>
                 </div>
-                <span className="font-mono text-[10px] text-emerald-400">✓ Shipped in v1.0.0</span>
+                <span className="font-mono text-[10px] text-emerald-400">✓ Shipped in v{STORE_CONFIG.PRODUCT_VERSION}</span>
               </div>
 
               <div className="mt-6">

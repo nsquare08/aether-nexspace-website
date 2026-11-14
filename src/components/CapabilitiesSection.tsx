@@ -8,6 +8,7 @@ import {
   Sparkles,
 } from 'lucide-react'
 import { cn } from '../lib/utils'
+import { STORE_CONFIG } from '../config/store'
 
 // ============================================================================
 // TYPES & CAPABILITY DATA
@@ -454,7 +455,7 @@ export function CapabilitiesSection() {
             </h2>
 
             <p className="mt-3 text-sm text-slate-300 sm:text-base">
-              Every capability runs locally inside Aether Nexspace v1.0.0—engineered for stability, session autonomy, and zero RAM waste.
+              Every capability runs locally inside Aether Nexspace v{STORE_CONFIG.PRODUCT_VERSION}—engineered for stability, session autonomy, and zero RAM waste.
             </p>
           </div>
 

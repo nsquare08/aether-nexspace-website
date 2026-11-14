@@ -122,11 +122,16 @@ export function HeroSection({ onOpenStoreModal, onExplore }: HeroSectionProps) {
             </span>
           </h1>
 
-          <p className="hero-stagger mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
-            Bring your apps, services, and everyday digital essentials together in one unified desktop workspace.
-          </p>
+          <div className="hero-stagger mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 text-xs text-slate-400">
+            {HERO_TELEMETRY.map(({ icon: Icon, label }) => (
+              <div key={label} className="inline-flex items-center gap-2 font-mono">
+                <Icon className="h-3.5 w-3.5 text-cyan-400" aria-hidden="true" />
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
 
-          <div className="hero-stagger mt-9 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+          <div className="hero-stagger mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
             <button
               type="button"
               onClick={onExplore}
@@ -141,15 +146,6 @@ export function HeroSection({ onOpenStoreModal, onExplore }: HeroSectionProps) {
               onOpenComingSoon={onOpenStoreModal}
               className="w-full sm:w-auto"
             />
-          </div>
-
-          <div className="hero-stagger mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 text-xs text-slate-400">
-            {HERO_TELEMETRY.map(({ icon: Icon, label }) => (
-              <div key={label} className="inline-flex items-center gap-2 font-mono">
-                <Icon className="h-3.5 w-3.5 text-cyan-400" aria-hidden="true" />
-                <span>{label}</span>
-              </div>
-            ))}
           </div>
         </div>
 
