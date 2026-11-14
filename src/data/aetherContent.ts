@@ -83,10 +83,10 @@ export const SHOWCASE_SCREENS: ShowcaseScreen[] = [
     eyebrow: '04 · Dual Surface Architecture',
     title: 'Adaptive Light, Dark, and System Fluent themes.',
     summary:
-      'Switch dynamically between Deep Obsidian and Light Pearl, follow Windows system preferences automatically, choose from 7 accent palettes, and toggle between English and Spanish without restarting.',
+      'Switch dynamically between Deep Obsidian and Light Pearl, follow Windows system preferences automatically, choose from 7 accent palettes, and customize your desktop environment.',
     image: '/screenshots/4-home-light.png',
     alt: 'Aether Nexspace desktop application home screen in light theme showing elevated cards and Fluent controls',
-    specs: ['Dark / Light / System', '7 Accent Palettes', 'English & Spanish Live', 'High-Contrast Mode'],
+    specs: ['Dark / Light / System', '7 Accent Palettes', 'System Tray Controls', 'High-Contrast Mode'],
   },
 ]
 
@@ -180,7 +180,7 @@ export const SCROLL_STORY_CHAPTERS: ScrollStoryChapter[] = [
     tag: 'Local-First Protection',
     title: 'Locked on your hardware. Quiet on your schedule.',
     description:
-      'Optional PIN lock encrypts credentials locally using Electron safeStorage (Windows DPAPI). Configure close-to-tray behavior, Fluent Light or Dark appearance, and bilingual EN/ES UI anytime.',
+      'Optional PIN lock encrypts credentials locally using Electron safeStorage (Windows DPAPI). Configure close-to-tray behavior and Fluent Light or Dark appearance.',
     detail: 'Zero NSquare accounts, zero cloud telemetry, and strict context-isolated web views.',
     image: '/screenshots/4-privacy-security.png',
     alt: 'Aether Nexspace Privacy & Security settings panel showing master PIN configuration, local session storage, and zero telemetry active',
