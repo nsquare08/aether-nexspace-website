@@ -1,6 +1,6 @@
 import { CheckCircle2, Monitor } from 'lucide-react'
 import { StoreCtaButton } from './StoreCtaButton'
-import { getStoreBadgeLabel, isStoreLive, STORE_CONFIG } from '../config/store'
+import { getStoreBadgeLabel, STORE_CONFIG } from '../config/store'
 
 interface DownloadSectionProps {
   onOpenStoreModal: () => void
@@ -13,8 +13,6 @@ const RELEASE_SPECS = [
 ]
 
 export function DownloadSection({ onOpenStoreModal }: DownloadSectionProps) {
-  const live = isStoreLive()
-
   return (
     <section
       id="download"
@@ -36,12 +34,6 @@ export function DownloadSection({ onOpenStoreModal }: DownloadSectionProps) {
             <h2 className="mx-auto mt-6 max-w-2xl font-display text-3xl font-semibold tracking-tight text-white sm:text-5xl">
               Make room for a better digital workspace.
             </h2>
-
-            <p className="mx-auto mt-5 max-w-xl text-base text-slate-300">
-              {live
-                ? 'Install Aether Nexspace directly from the official Microsoft Store listing for automatic Store-managed updates.'
-                : 'Aether Nexspace is undergoing Microsoft Store certification. Public download activates here once Store review is complete.'}
-            </p>
 
             <div className="mt-9 flex flex-col items-center justify-center gap-4">
               <StoreCtaButton onOpenComingSoon={onOpenStoreModal} className="px-8 py-4 text-base" />

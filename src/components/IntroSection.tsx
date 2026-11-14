@@ -133,10 +133,6 @@ export function IntroSection() {
               spatial serenity.
             </span>
           </h2>
-
-          <p className="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
-            Everyday web apps were never meant to fight for air inside ephemeral browser tabs. Step inside the architecture of a dedicated desktop shell.
-          </p>
         </div>
 
         {/* ================================================================

@@ -125,10 +125,6 @@ export function PrivacySection({ onOpenPrivacy }: PrivacySectionProps) {
               100% on your device.
             </span>
           </h2>
-
-          <p className="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
-            Aether Nexspace operates without vendor servers, analytics collectors, or cloud profiling. Your web sessions travel directly between your Windows PC and the services you visit.
-          </p>
         </div>
 
         {/* ================================================================
