@@ -182,8 +182,8 @@ export const SCROLL_STORY_CHAPTERS: ScrollStoryChapter[] = [
     description:
       'Optional PIN lock encrypts credentials locally using Electron safeStorage (Windows DPAPI). Configure close-to-tray behavior, Fluent Light or Dark appearance, and bilingual EN/ES UI anytime.',
     detail: 'Zero NSquare accounts, zero cloud telemetry, and strict context-isolated web views.',
-    image: '/screenshots/4-home-light.png',
-    alt: 'Aether Nexspace Light Pearl theme interface showing Windows Fluent appearance',
+    image: '/screenshots/4-privacy-security.png',
+    alt: 'Aether Nexspace Privacy & Security settings panel showing master PIN configuration, local session storage, and zero telemetry active',
     accent: 'sky',
   },
 ]

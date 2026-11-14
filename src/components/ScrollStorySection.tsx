@@ -140,7 +140,7 @@ export function ScrollStorySection() {
                 </span>
               </div>
 
-              <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-white/[0.08] bg-[#050710]">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-white/[0.08] bg-[#050710]">
                 {SCROLL_STORY_CHAPTERS.map((chap, idx) => (
                   <img
                     key={chap.index}
