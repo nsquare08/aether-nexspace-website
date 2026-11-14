@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
 import {
   Sparkles,
   Layers,
@@ -100,28 +99,6 @@ const COMPARISONS = [
 export function IntroSection() {
   const [selectedLayerIndex, setSelectedLayerIndex] = useState(0)
   const [realityMode, setRealityMode] = useState<'aether' | 'browser'>('aether')
-  const [activeFilmOrbit, setActiveFilmOrbit] = useState<number>(0)
-
-  const FILM_ORBITS = [
-    {
-      title: 'Obsidian Spatial Canvas',
-      tag: 'WORKSPACE 01',
-      desc: 'Quick-start cards, topbar memory telemetry, and instant service switching.',
-      image: '/screenshots/1-home-dark.png',
-    },
-    {
-      title: 'Curated 38-Service Catalog',
-      tag: 'WORKSPACE 02',
-      desc: 'Browse pre-configured web services or inject any custom HTTPS destination.',
-      image: '/screenshots/2-service-catalog.png',
-    },
-    {
-      title: 'Resource & Sleep Engine',
-      tag: 'WORKSPACE 03',
-      desc: 'Fine-tune inactivity timers per workspace and reclaim active RAM.',
-      image: '/screenshots/3-performance-settings.png',
-    },
-  ]
 
   const activeLayer = STACK_LAYERS[selectedLayerIndex]
 
@@ -344,62 +321,6 @@ export function IntroSection() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* ================================================================
-            ACT III: INTERACTIVE CINEMATIC ORBIT PREVIEWER
-           ================================================================ */}
-        <div className="mt-20">
-          <div className="text-center">
-            <span className="font-mono text-xs tracking-wider text-cyan-400 uppercase">
-              Act III · Spatial Orbits
-            </span>
-            <h3 className="mt-2 font-display text-2xl font-semibold text-white sm:text-3xl">
-              Experience the Desktop Frame in Motion
-            </h3>
-          </div>
-
-          {/* Interactive Screen Switcher Pills */}
-          <div className="mt-8 flex justify-center gap-2">
-            {FILM_ORBITS.map((orbit, idx) => (
-              <button
-                key={orbit.title}
-                type="button"
-                onClick={() => setActiveFilmOrbit(idx)}
-                className={cn(
-                  'cursor-pointer rounded-xl border px-4 py-2 font-mono text-xs transition duration-200',
-                  activeFilmOrbit === idx
-                    ? 'border-cyan-400 bg-cyan-500/20 text-white shadow-[0_0_15px_rgba(6,182,212,0.3)]'
-                    : 'border-white/10 bg-[#0c101d] text-slate-400 hover:text-slate-200'
-                )}
-              >
-                {orbit.tag} · {orbit.title}
-              </button>
-            ))}
-          </div>
-
-          {/* High-Resolution Cinematic Frame Display */}
-          <div className="relative mx-auto mt-8 max-w-5xl overflow-hidden rounded-2xl border border-white/[0.12] bg-[#080b16] p-2 shadow-[0_32px_100px_rgba(0,0,0,0.9)] sm:p-3">
-            <div className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#070912]">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={FILM_ORBITS[activeFilmOrbit].image}
-                  src={FILM_ORBITS[activeFilmOrbit].image}
-                  alt={FILM_ORBITS[activeFilmOrbit].title}
-                  initial={{ opacity: 0, scale: 0.99 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.01 }}
-                  transition={{ duration: 0.35 }}
-                  width={1600}
-                  height={1000}
-                  className="block h-auto w-full object-cover"
-                />
-              </AnimatePresence>
-            </div>
-            <p className="mt-3 text-center font-mono text-xs text-slate-400">
-              {FILM_ORBITS[activeFilmOrbit].desc}
-            </p>
           </div>
         </div>
       </div>
