@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { RotateCcw, X, ZoomIn, ZoomOut } from 'lucide-react'
+import { RotateCcw, X, ZoomIn, ZoomOut, Scan } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SCROLL_STORY_CHAPTERS } from '../data/aetherContent'
+import { ImageGenerationLoader } from './ui/image-generation-loader'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -20,6 +21,21 @@ export function ScrollStorySection() {
   const [activeChapter, setActiveChapter] = useState(0)
   const [isZoomOpen, setIsZoomOpen] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(1)
+  const [scanningChapter, setScanningChapter] = useState<number | null>(0)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setScanningChapter(null)
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [activeChapter])
+
+  const selectChapter = (idx: number) => {
+    setActiveChapter(idx)
+    setScanningChapter(idx)
+  }
+
+  const isScanning = scanningChapter !== null
 
   useEffect(() => {
     if (!isZoomOpen) return
@@ -98,7 +114,7 @@ export function ScrollStorySection() {
               return (
                 <div
                   key={chapter.index}
-                  onMouseEnter={() => setActiveChapter(idx)}
+                  onMouseEnter={() => selectChapter(idx)}
                   className={`story-chapter-card rounded-2xl border p-6 transition-all duration-300 sm:p-7 ${
                     isCurrent
                       ? 'border-cyan-400/35 bg-[#0b101d] shadow-[0_0_40px_-16px_rgba(56,189,248,0.3)]'
@@ -165,7 +181,7 @@ export function ScrollStorySection() {
                     <button
                       key={chap.index}
                       type="button"
-                      onClick={() => setActiveChapter(idx)}
+                      onClick={() => selectChapter(idx)}
                       className={`h-1.5 cursor-pointer rounded-full transition-all ${
                         idx === activeChapter ? 'w-8 bg-cyan-400' : 'w-2.5 bg-white/20 hover:bg-white/40'
                       }`}
@@ -173,10 +189,22 @@ export function ScrollStorySection() {
                     />
                   ))}
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <span className="font-mono text-[11px] text-slate-400">
                     {current.index} / {current.tag}
                   </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setScanningChapter(null)
+                      setTimeout(() => setScanningChapter(activeChapter), 20)
+                    }}
+                    className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-cyan-400/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-[10px] text-cyan-300 transition hover:border-cyan-300 hover:bg-cyan-500/20"
+                    title="Rescan workspace screenshot"
+                  >
+                    <Scan className="h-3 w-3" />
+                    <span>{isScanning ? 'Scanning...' : 'Scan'}</span>
+                  </button>
                   <button
                     type="button"
                     onClick={() => {
@@ -217,8 +245,32 @@ export function ScrollStorySection() {
                   />
                 ))}
 
+                {/* Aceternity Image Generation Loader (Scans before screenshot appears) */}
+                <AnimatePresence mode="wait">
+                  {isScanning && (
+                    <motion.div
+                      key={`stage-loader-${activeChapter}`}
+                      initial={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="pointer-events-none absolute inset-0 z-10 overflow-hidden"
+                    >
+                      <ImageGenerationLoader
+                        duration={2000}
+                        bandHeight={52}
+                        cellSize={4}
+                        gap={2}
+                        effect="scale-wave"
+                        colors={['#22d3ee', '#0284c7']}
+                        text={current.tag.toUpperCase()}
+                        overlayOpacity={0.35}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 {/* Subtle Hover Zoom Affordance Pill */}
-                <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 backdrop-blur-[2px] transition-opacity duration-200 group-hover:opacity-100">
+                <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-black/25 opacity-0 backdrop-blur-[2px] transition-opacity duration-200 group-hover:opacity-100">
                   <span className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-black/85 px-4 py-2 font-mono text-xs font-medium text-cyan-200 shadow-2xl">
                     <ZoomIn className="h-3.5 w-3.5 text-cyan-400" />
                     <span>Click to expand &amp; zoom</span>
