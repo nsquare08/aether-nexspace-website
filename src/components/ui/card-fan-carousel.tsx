@@ -25,6 +25,13 @@ const DEFAULT_SLOTS = [
   { rot: 21, scale: 0.7756, x: 30, y: 7.3, zIndex: 1 },
 ]
 
+const FOUR_SLOTS = [
+  { rot: -11, scale: 0.94, x: -24, y: 3.2, zIndex: 2 },
+  { rot: -3.6, scale: 0.98, x: -8, y: 0.8, zIndex: 4 },
+  { rot: 3.6, scale: 0.98, x: 8, y: 0.8, zIndex: 4 },
+  { rot: 11, scale: 0.94, x: 24, y: 3.2, zIndex: 2 },
+]
+
 function getResponsiveMultiplier(w: number): number {
   if (w < 480) return 0.28
   if (w < 640) return 0.38
@@ -45,6 +52,9 @@ function getHeightMultiplier(w: number): number {
 }
 
 function getSlotConfig(total: number, slot: number) {
+  if (total === 4 && slot < FOUR_SLOTS.length) {
+    return FOUR_SLOTS[slot]
+  }
   if (total >= MAX_VISIBLE && slot < DEFAULT_SLOTS.length) {
     return DEFAULT_SLOTS[slot]
   }
