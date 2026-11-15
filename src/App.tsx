@@ -15,6 +15,7 @@ import { Footer } from './components/Footer'
 import { StoreStatusModal } from './components/StoreStatusModal'
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage'
 import { BackToTop } from './components/BackToTop'
+import { SmoothFollower } from './components/ui/smooth-cursor-follower'
 
 export function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname || '/')
@@ -109,6 +110,7 @@ export function App() {
         />
 
         <BackToTop />
+        <SmoothFollower />
       </div>
     </MotionConfig>
   )
