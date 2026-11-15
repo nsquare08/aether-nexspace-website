@@ -1,85 +1,113 @@
 import { useState } from 'react'
-import {
-  Sparkles,
-  Layers,
-  Cpu,
-  ArrowRight,
-  Database,
-  Lock,
-} from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { cn } from '../lib/utils'
-import { STORE_CONFIG } from '../config/store'
 import { CompareRealityReveal } from './CompareRealityReveal'
 
 // ============================================================================
-// ARCHITECTURAL EXPLODED LAYERS DATA
+// ARCHITECTURAL EXPLODED LAYERS DATA (Minimalistic & Crisp)
 // ============================================================================
 
 interface StackLayer {
   id: string
   number: string
   name: string
-  role: string
-  detail: string
-  accent: string
-  icon: typeof Layers
+  shortName: string
   badge: string
+  summary: string
+  specs: string[]
+  accent: 'cyan' | 'emerald' | 'violet' | 'amber'
 }
 
 const STACK_LAYERS: StackLayer[] = [
   {
     id: 'layer-shell',
     number: '01',
-    name: 'Spatial Shell & Navigation Rail',
-    role: 'Top-Level Window & Multi-Workspace Manager',
-    detail: 'Three isolated spatial workspaces (Personal, Work, Custom) bounded inside a calibrated obsidian frame with roving tabindex and instant shortcut switching.',
+    name: 'Spatial Shell',
+    shortName: 'Shell',
+    badge: 'Desktop Host',
+    summary: 'Three isolated workspaces inside a single obsidian frame with instant shortcut switching.',
+    specs: ['Personal, Work & Custom', 'Instant Shortcut Switch', 'Zero Window Clutter'],
     accent: 'cyan',
-    icon: Layers,
-    badge: 'Desktop Host Layer',
   },
   {
     id: 'layer-partitions',
     number: '02',
-    name: 'Hermetic Storage Partitions',
-    role: 'Isolated Chromium Storage per Service',
-    detail: 'Every service instance runs with its own isolated cookies, cache, and IndexedDB SQLite store (persist:<id>). Up to two accounts of any app run side-by-side with zero bleed.',
-    accent: 'emerald',
-    icon: Database,
+    name: 'Hermetic Partitions',
+    shortName: 'Sandbox',
     badge: 'Sandbox Runtime',
+    summary: 'Independent cookie jars and SQLite storage per service. Run two accounts side-by-side with zero bleed.',
+    specs: ['Multi-Account per App', 'Zero Cookie Bleed', 'Isolated SQLite Store'],
+    accent: 'emerald',
   },
   {
     id: 'layer-ram',
     number: '03',
-    name: 'Resource Discipline Engine',
-    role: 'Automatic Inactivity Sleep & RAM Suspension',
-    detail: 'Monitors real-time private memory and unloads inactive WebContents renderers during idle periods (5m–1h) without signing you out of web applications.',
+    name: 'Resource Discipline',
+    shortName: 'Memory',
+    badge: 'Memory Engine',
+    summary: 'Automatically suspends inactive background renderers to keep RAM minimal while retaining active logins.',
+    specs: ['Smart RAM Sleep', 'Zero Login Loss', 'Instant Wakeup'],
     accent: 'violet',
-    icon: Cpu,
-    badge: 'Memory Management',
   },
   {
     id: 'layer-security',
     number: '04',
-    name: 'Local Cryptographic Vault',
-    role: 'Hardware-Backed Windows DPAPI Encryption',
-    detail: 'Optional workspace lock PINs and proxy credentials encrypted using Windows Data Protection API (Crypt32). Absolute zero cloud servers and zero tracking telemetry.',
+    name: 'Hardware Vault',
+    shortName: 'Security',
+    badge: 'Local Security',
+    summary: 'Workspace PINs and proxy credentials encrypted locally via Windows DPAPI. Zero cloud telemetry.',
+    specs: ['Windows DPAPI (Crypt32)', 'Zero Telemetry', '100% On-Device'],
     accent: 'amber',
-    icon: Lock,
-    badge: 'Local-First Security',
   },
 ]
+
+const LAYER_ACCENTS: Record<
+  StackLayer['accent'],
+  {
+    border: string
+    activeBg: string
+    badgeClass: string
+    mesh: string
+  }
+> = {
+  cyan: {
+    border: 'border-cyan-400',
+    activeBg: 'bg-cyan-500/15',
+    badgeClass: 'bg-cyan-400/10 text-cyan-300 border-cyan-400/30',
+    mesh: 'radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.22) 0px, transparent 65%), radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.14) 0px, transparent 60%), #070a14',
+  },
+  emerald: {
+    border: 'border-emerald-400',
+    activeBg: 'bg-emerald-500/15',
+    badgeClass: 'bg-emerald-400/10 text-emerald-300 border-emerald-400/30',
+    mesh: 'radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.22) 0px, transparent 65%), radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.14) 0px, transparent 60%), #070f14',
+  },
+  violet: {
+    border: 'border-violet-400',
+    activeBg: 'bg-violet-500/15',
+    badgeClass: 'bg-violet-400/10 text-violet-300 border-violet-400/30',
+    mesh: 'radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.22) 0px, transparent 65%), radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.14) 0px, transparent 60%), #0a0816',
+  },
+  amber: {
+    border: 'border-amber-400',
+    activeBg: 'bg-amber-500/15',
+    badgeClass: 'bg-amber-400/10 text-amber-300 border-amber-400/30',
+    mesh: 'radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.22) 0px, transparent 65%), radial-gradient(at 100% 100%, rgba(239, 68, 68, 0.14) 0px, transparent 60%), #120a06',
+  },
+}
 
 export function IntroSection() {
   const [selectedLayerIndex, setSelectedLayerIndex] = useState(0)
 
   const activeLayer = STACK_LAYERS[selectedLayerIndex]
+  const activeAccent = LAYER_ACCENTS[activeLayer.accent]
 
   return (
     <section
       id="intro"
       className="relative z-10 overflow-hidden border-t border-white/[0.08] bg-[#050711] py-24 sm:py-32"
     >
-      {/* Background Magic UI Dot Matrix */}
+      {/* Background Dot Matrix */}
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px] opacity-75"
         aria-hidden="true"
@@ -111,107 +139,163 @@ export function IntroSection() {
         <CompareRealityReveal />
 
         {/* ================================================================
-            ACT II: 3D EXPLODED ARCHITECTURAL RUNTIME STACK
+            ACT II: MINIMALISTIC ARCHITECTURAL RUNTIME STACK
            ================================================================ */}
-        <div className="mt-16 grid gap-12 lg:grid-cols-12 lg:items-center">
+        <div className="mt-20 grid gap-8 lg:grid-cols-12 lg:items-center">
           {/* Left: Layer Selector Buttons */}
           <div className="lg:col-span-5">
             <span className="font-mono text-xs tracking-wider text-cyan-400 uppercase">
               Act II · The Runtime Stack
             </span>
             <h3 className="mt-2 font-display text-2xl font-semibold text-white sm:text-3xl">
-              Engineered layer by layer for uncompromising isolation.
+              Four tiers. Absolute isolation.
             </h3>
-            <p className="mt-3 text-sm leading-relaxed text-slate-300">
-              Click each architectural stratum to inspect how Aether isolates web content, safeguards memory, and encrypts credentials on disk.
+            <p className="mt-2 text-xs text-slate-400 sm:text-sm">
+              Engineered from host window shell to hardware-encrypted disk.
             </p>
 
-            <div className="mt-6 space-y-2">
-              {STACK_LAYERS.map((layer, idx) => (
-                <button
-                  key={layer.id}
-                  type="button"
-                  onClick={() => setSelectedLayerIndex(idx)}
-                  className={cn(
-                    'group/layer flex w-full cursor-pointer items-center justify-between rounded-xl border p-3.5 text-left transition duration-200',
-                    selectedLayerIndex === idx
-                      ? 'border-cyan-400 bg-cyan-500/15 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
-                      : 'border-white/[0.08] bg-[#0c101d]/60 hover:border-cyan-400/30 hover:bg-[#101526]'
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs font-semibold text-cyan-400">
-                      {layer.number}
-                    </span>
-                    <div>
-                      <p className="text-xs font-semibold text-white group-hover/layer:text-cyan-200">
-                        {layer.name}
-                      </p>
-                      <p className="font-mono text-[10px] text-slate-400">{layer.badge}</p>
-                    </div>
-                  </div>
-                  <ArrowRight
+            <div className="mt-6 space-y-2.5">
+              {STACK_LAYERS.map((layer, idx) => {
+                const isSelected = selectedLayerIndex === idx
+                return (
+                  <button
+                    key={layer.id}
+                    type="button"
+                    onClick={() => setSelectedLayerIndex(idx)}
                     className={cn(
-                      'h-4 w-4 transition-transform duration-200',
-                      selectedLayerIndex === idx ? 'text-cyan-400 translate-x-1' : 'text-slate-500'
+                      'group relative flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-3 text-left transition duration-200',
+                      isSelected
+                        ? 'border-cyan-400/80 bg-cyan-500/10 shadow-[0_0_16px_rgba(6,182,212,0.18)]'
+                        : 'border-white/[0.06] bg-[#0c101d]/50 hover:border-white/20 hover:bg-[#101526]'
                     )}
-                  />
-                </button>
-              ))}
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <span
+                        className={cn(
+                          'font-mono text-xs font-semibold transition-colors',
+                          isSelected ? 'text-cyan-400' : 'text-slate-500 group-hover:text-slate-300'
+                        )}
+                      >
+                        {layer.number}
+                      </span>
+                      <div>
+                        <p
+                          className={cn(
+                            'text-xs font-semibold tracking-wide transition-colors',
+                            isSelected ? 'text-white' : 'text-slate-300 group-hover:text-white'
+                          )}
+                        >
+                          {layer.name}
+                        </p>
+                        <p className="font-mono text-[10px] text-slate-400">{layer.badge}</p>
+                      </div>
+                    </div>
+
+                    <div
+                      className={cn(
+                        'h-1.5 w-1.5 rounded-full transition-all duration-200',
+                        isSelected
+                          ? 'bg-cyan-400 shadow-[0_0_8px_#22d3ee] scale-125'
+                          : 'bg-transparent'
+                      )}
+                    />
+                  </button>
+                )
+              })}
             </div>
           </div>
 
-          {/* Right: 3D Exploded Layer Detail Canvas */}
+          {/* Right: Minimalist Detail Card with Grainy Mesh Gradient */}
           <div className="lg:col-span-7">
-            <div className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-gradient-to-b from-[#0e1324] via-[#090d18] to-[#060810] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.8)] sm:p-8">
-              {/* Radial Top Glow */}
+            <div
+              className="relative overflow-hidden rounded-2xl border border-white/[0.1] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.6)] sm:p-8 transition-all duration-300"
+              style={{
+                backgroundImage: activeAccent.mesh,
+              }}
+            >
+              {/* Grain Noise Overlay for Tactile Texture */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-cyan-500/15 blur-3xl"
+                className="pointer-events-none absolute inset-0 opacity-[0.14] mix-blend-overlay"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                }}
               />
 
-              <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+              {/* Radial Ambient Glow */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-cyan-500/10 blur-3xl"
+              />
+
+              {/* Header Badge & Status */}
+              <div className="relative z-10 flex items-center justify-between border-b border-white/[0.08] pb-4">
                 <div className="flex items-center gap-2.5">
-                  <span className="rounded bg-cyan-400/10 px-2.5 py-1 font-mono text-xs font-semibold text-cyan-300">
+                  <span
+                    className={cn(
+                      'rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-semibold',
+                      activeAccent.badgeClass
+                    )}
+                  >
                     Tier {activeLayer.number}
                   </span>
                   <span className="font-mono text-xs text-slate-400">{activeLayer.badge}</span>
                 </div>
-                <span className="font-mono text-[10px] text-emerald-400">✓ Shipped in v{STORE_CONFIG.PRODUCT_VERSION}</span>
+                <span className="font-mono text-[10px] text-emerald-400">✓ Active Stratum</span>
               </div>
 
-              <div className="mt-6">
-                <h4 className="font-display text-2xl font-semibold text-white">
+              {/* Core Content */}
+              <div className="relative z-10 mt-6">
+                <h4 className="font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                   {activeLayer.name}
                 </h4>
-                <p className="mt-1 font-mono text-xs text-cyan-300">{activeLayer.role}</p>
 
-                <p className="mt-4 text-sm leading-relaxed text-slate-300 sm:text-base">
-                  {activeLayer.detail}
+                <p className="mt-3 text-sm leading-relaxed text-slate-200 sm:text-base">
+                  {activeLayer.summary}
                 </p>
+
+                {/* Minimalist Spec Tags */}
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {activeLayer.specs.map((spec) => (
+                    <span
+                      key={spec}
+                      className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-3 py-1 font-mono text-xs text-slate-300"
+                    >
+                      {spec}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              {/* Visual 3D Stack Mockup */}
-              <div className="mt-8 rounded-xl border border-white/[0.08] bg-[#070a14] p-4 font-mono text-xs text-slate-400">
-                <div className="flex items-center justify-between text-[11px] text-slate-300">
-                  <span>Architecture Hierarchy:</span>
-                  <span className="text-cyan-400">4 / 4 Tiers Active</span>
+              {/* Minimalist 4-Level Strata Bar */}
+              <div className="relative z-10 mt-8 border-t border-white/[0.08] pt-5">
+                <div className="mb-2.5 flex items-center justify-between font-mono text-[11px] text-slate-400">
+                  <span>Runtime Strata:</span>
+                  <span className="text-cyan-400">Tier {activeLayer.number} / 04</span>
                 </div>
 
-                <div className="mt-3 grid grid-cols-4 gap-1.5 text-center text-[10px]">
-                  {STACK_LAYERS.map((l, i) => (
-                    <div
-                      key={l.id}
-                      className={cn(
-                        'rounded border p-2 transition',
-                        selectedLayerIndex === i
-                          ? 'border-cyan-400 bg-cyan-500/20 text-white font-semibold'
-                          : 'border-white/5 bg-white/[0.02] text-slate-500'
-                      )}
-                    >
-                      Tier {l.number}
-                    </div>
-                  ))}
+                <div className="grid grid-cols-4 gap-2">
+                  {STACK_LAYERS.map((l, i) => {
+                    const isCur = selectedLayerIndex === i
+                    return (
+                      <button
+                        key={l.id}
+                        type="button"
+                        onClick={() => setSelectedLayerIndex(i)}
+                        className={cn(
+                          'group/bar relative flex cursor-pointer flex-col items-center justify-center rounded-lg border py-2 px-1 text-center font-mono transition-all duration-200',
+                          isCur
+                            ? 'border-cyan-400 bg-cyan-500/20 text-white shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+                            : 'border-white/[0.06] bg-black/30 text-slate-400 hover:border-white/20 hover:text-slate-200'
+                        )}
+                      >
+                        <span className="text-[10px] font-semibold">T-0{i + 1}</span>
+                        <span className="max-w-full truncate text-[9px] text-slate-400 group-hover/bar:text-slate-300">
+                          {l.shortName}
+                        </span>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             </div>
