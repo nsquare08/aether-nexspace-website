@@ -1,41 +1,39 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { RotateCcw, X, ZoomIn, ZoomOut, Scan } from 'lucide-react'
+import { RotateCcw, X, ZoomIn, ZoomOut } from 'lucide-react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SCROLL_STORY_CHAPTERS } from '../data/aetherContent'
-import { ImageGenerationLoader } from './ui/image-generation-loader'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const ACCENT_CLASSES: Record<string, string> = {
-  cyan: 'text-cyan-300 border-cyan-400/40 bg-cyan-500/10',
-  violet: 'text-violet-300 border-violet-400/40 bg-violet-500/10',
-  emerald: 'text-emerald-300 border-emerald-400/40 bg-emerald-500/10',
-  sky: 'text-sky-300 border-sky-400/40 bg-sky-500/10',
+  cyan: 'text-cyan-300 border-cyan-400/40 bg-cyan-500/10 shadow-[0_0_10px_rgba(6,182,212,0.2)]',
+  violet: 'text-violet-300 border-violet-400/40 bg-violet-500/10 shadow-[0_0_10px_rgba(139,92,246,0.2)]',
+  emerald: 'text-emerald-300 border-emerald-400/40 bg-emerald-500/10 shadow-[0_0_10px_rgba(16,185,129,0.2)]',
+  sky: 'text-sky-300 border-sky-400/40 bg-sky-500/10 shadow-[0_0_10px_rgba(56,189,248,0.2)]',
 }
+
+const MESH_BACKGROUNDS: Record<string, string> = {
+  cyan: 'radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.22) 0px, transparent 65%), radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.16) 0px, transparent 60%), radial-gradient(at 50% 100%, rgba(147, 51, 234, 0.12) 0px, transparent 65%), #080d1a',
+  violet: 'radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.22) 0px, transparent 65%), radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.14) 0px, transparent 60%), radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.10) 0px, transparent 65%), #0a0a1a',
+  emerald: 'radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.22) 0px, transparent 65%), radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.14) 0px, transparent 60%), radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.10) 0px, transparent 65%), #070f16',
+  sky: 'radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.22) 0px, transparent 65%), radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.14) 0px, transparent 60%), radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.10) 0px, transparent 65%), #080d1c',
+}
+
+const INACTIVE_MESH =
+  'radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.04) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.03) 0px, transparent 50%), #070914'
 
 export function ScrollStorySection() {
   const containerRef = useRef<HTMLElement | null>(null)
   const [activeChapter, setActiveChapter] = useState(0)
   const [isZoomOpen, setIsZoomOpen] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(1)
-  const [scanningChapter, setScanningChapter] = useState<number | null>(0)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setScanningChapter(null)
-    }, 2000)
-    return () => clearTimeout(timer)
-  }, [activeChapter])
 
   const selectChapter = (idx: number) => {
     setActiveChapter(idx)
-    setScanningChapter(idx)
   }
-
-  const isScanning = scanningChapter !== null
 
   useEffect(() => {
     if (!isZoomOpen) return
@@ -107,59 +105,82 @@ export function ScrollStorySection() {
         </div>
 
         <div className="mt-14 grid gap-12 lg:grid-cols-12 lg:items-start">
-          {/* Scrolling Narrative Chapters */}
-          <div className="space-y-8 lg:col-span-5 lg:space-y-24 lg:pb-16">
+          {/* Scrolling Narrative Chapters with Grainy Mesh Blended Gradient */}
+          <div className="space-y-6 lg:col-span-5 lg:space-y-16 lg:pb-16">
             {SCROLL_STORY_CHAPTERS.map((chapter, idx) => {
               const isCurrent = idx === activeChapter
               return (
                 <div
                   key={chapter.index}
                   onMouseEnter={() => selectChapter(idx)}
-                  className={`story-chapter-card rounded-2xl border p-6 transition-all duration-300 sm:p-7 ${
+                  style={{
+                    backgroundImage: isCurrent ? MESH_BACKGROUNDS[chapter.accent] : INACTIVE_MESH,
+                  }}
+                  className={`story-chapter-card relative overflow-hidden rounded-2xl border p-6 transition-all duration-500 sm:p-7 ${
                     isCurrent
-                      ? 'border-cyan-400/35 bg-[#0b101d] shadow-[0_0_40px_-16px_rgba(56,189,248,0.3)]'
-                      : 'border-white/[0.07] bg-[#080b13]/75 lg:opacity-65 hover:lg:opacity-100'
+                      ? 'border-cyan-400/40 shadow-[0_0_50px_-12px_rgba(6,182,212,0.3)] ring-1 ring-cyan-400/20'
+                      : 'border-white/[0.08] lg:opacity-70 hover:lg:opacity-100 hover:border-white/20'
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`inline-flex rounded-full border px-2.5 py-0.5 font-mono text-[11px] ${ACCENT_CLASSES[chapter.accent]}`}
-                    >
-                      {chapter.index} · {chapter.tag}
-                    </span>
-                  </div>
-                  <h3 className="mt-4 font-display text-2xl font-semibold text-white">
-                    {chapter.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-300">
-                    {chapter.description}
-                  </p>
-                  <p className="mt-4 border-t border-white/[0.07] pt-3.5 font-mono text-xs leading-relaxed text-slate-400">
-                    {chapter.detail}
-                  </p>
-
-                  {/* Mobile-only inline preview so mobile users see every screen in context */}
+                  {/* Subtle Grain Noise Overlay for Tactile Texture */}
                   <div
-                    onClick={() => {
-                      setActiveChapter(idx)
-                      setIsZoomOpen(true)
-                      setZoomLevel(1)
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 opacity-[0.24] mix-blend-overlay"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
                     }}
-                    className="group relative mt-5 cursor-zoom-in overflow-hidden rounded-xl border border-white/[0.08] lg:hidden"
-                    title="Tap to zoom in"
-                  >
-                    <img
-                      src={chapter.image}
-                      alt={chapter.alt}
-                      width={1600}
-                      height={1000}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                    <div className="absolute right-2.5 bottom-2.5 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/75 px-2.5 py-1 font-mono text-[11px] text-cyan-200 backdrop-blur-sm">
-                      <ZoomIn className="h-3 w-3 text-cyan-400" />
-                      <span>Tap to zoom</span>
+                  />
+
+                  {/* Top Illuminated Accent Border Line */}
+                  <div
+                    className={`absolute top-0 left-0 right-0 h-[2px] transition-all duration-500 ${
+                      isCurrent
+                        ? 'bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-90'
+                        : 'bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-20'
+                    }`}
+                  />
+
+                  {/* Crisp, Minimalistic Content */}
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={`inline-flex rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-semibold tracking-wide ${ACCENT_CLASSES[chapter.accent]}`}
+                      >
+                        {chapter.index} · {chapter.tag}
+                      </span>
+                    </div>
+
+                    <h3 className="mt-3.5 font-display text-xl sm:text-2xl font-semibold tracking-tight text-white leading-snug">
+                      {chapter.title}
+                    </h3>
+
+                    <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-200/90 font-sans">
+                      {chapter.description}
+                    </p>
+
+                    {/* Mobile-only inline preview */}
+                    <div
+                      onClick={() => {
+                        setActiveChapter(idx)
+                        setIsZoomOpen(true)
+                        setZoomLevel(1)
+                      }}
+                      className="group relative mt-5 cursor-zoom-in overflow-hidden rounded-xl border border-white/[0.08] lg:hidden"
+                      title="Tap to zoom in"
+                    >
+                      <img
+                        src={chapter.image}
+                        alt={chapter.alt}
+                        width={1600}
+                        height={1000}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                      />
+                      <div className="absolute right-2.5 bottom-2.5 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/75 px-2.5 py-1 font-mono text-[11px] text-cyan-200 backdrop-blur-sm">
+                        <ZoomIn className="h-3 w-3 text-cyan-400" />
+                        <span>Tap to zoom</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -196,25 +217,13 @@ export function ScrollStorySection() {
                   <button
                     type="button"
                     onClick={() => {
-                      setScanningChapter(null)
-                      setTimeout(() => setScanningChapter(activeChapter), 20)
-                    }}
-                    className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-cyan-400/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-[10px] text-cyan-300 transition hover:border-cyan-300 hover:bg-cyan-500/20"
-                    title="Rescan workspace screenshot"
-                  >
-                    <Scan className="h-3 w-3" />
-                    <span>{isScanning ? 'Scanning...' : 'Scan'}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
                       setIsZoomOpen(true)
                       setZoomLevel(1)
                     }}
-                    className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-cyan-400/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-[10px] text-cyan-300 transition hover:border-cyan-300 hover:bg-cyan-500/20"
+                    className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-cyan-400/30 bg-cyan-500/10 px-2.5 py-1 font-mono text-[11px] text-cyan-300 transition hover:border-cyan-300 hover:bg-cyan-500/20"
                     title="Click to zoom in"
                   >
-                    <ZoomIn className="h-3 w-3" />
+                    <ZoomIn className="h-3.5 w-3.5" />
                     <span>Zoom</span>
                   </button>
                 </div>
@@ -244,30 +253,6 @@ export function ScrollStorySection() {
                     }`}
                   />
                 ))}
-
-                {/* Aceternity Image Generation Loader (Scans before screenshot appears) */}
-                <AnimatePresence mode="wait">
-                  {isScanning && (
-                    <motion.div
-                      key={`stage-loader-${activeChapter}`}
-                      initial={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.4 }}
-                      className="pointer-events-none absolute inset-0 z-10 overflow-hidden"
-                    >
-                      <ImageGenerationLoader
-                        duration={2000}
-                        bandHeight={52}
-                        cellSize={4}
-                        gap={2}
-                        effect="scale-wave"
-                        colors={['#22d3ee', '#0284c7']}
-                        text={current.tag.toUpperCase()}
-                        overlayOpacity={0.35}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
 
                 {/* Subtle Hover Zoom Affordance Pill */}
                 <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-black/25 opacity-0 backdrop-blur-[2px] transition-opacity duration-200 group-hover:opacity-100">

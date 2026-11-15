@@ -147,8 +147,8 @@ export const SCROLL_STORY_CHAPTERS: ScrollStoryChapter[] = [
     tag: 'Spatial Consolidation',
     title: 'Leave forty browser tabs behind.',
     description:
-      'Aether Nexspace replaces scattered browser windows with a single keyboard-addressable desktop shell built specifically for everyday web apps.',
-    detail: 'Quick-switch across Work and Personal workspaces via the top bar, dropdown menu, or Ctrl+Shift+[ and Ctrl+Shift+].',
+      'A single keyboard-driven desktop shell for your daily web apps. Switch between Work and Personal in one keystroke.',
+    detail: '',
     image: '/screenshots/1-home-dark.png',
     alt: 'Aether Nexspace Dark workspace shell consolidating web applications',
     accent: 'cyan',
@@ -158,8 +158,8 @@ export const SCROLL_STORY_CHAPTERS: ScrollStoryChapter[] = [
     tag: 'Partition Boundaries',
     title: 'Curated catalog, isolated sessions.',
     description:
-      'Launch from 38 built-in services or add custom HTTPS destinations. Each app instance keeps its own Chromium partition on disk, preventing cookie and account collisions.',
-    detail: 'Run up to two independent accounts per service (e.g. Gmail 1 & Gmail 2) with isolated caches and notification controls.',
+      'Launch 38+ built-in services or custom HTTPS destinations. Isolated Chromium partitions keep multiple accounts completely separate.',
+    detail: '',
     image: '/screenshots/2-service-catalog.png',
     alt: 'Aether Nexspace curated service catalog modal with 12 category filters',
     accent: 'violet',
@@ -169,8 +169,8 @@ export const SCROLL_STORY_CHAPTERS: ScrollStoryChapter[] = [
     tag: 'Active Memory Discipline',
     title: 'Reclaim RAM while sessions wait.',
     description:
-      'Inactive apps step down onto configurable inactivity timers and Deep Sleep unloading—cutting active renderer memory without wiping your authentication state.',
-    detail: 'Exclude priority apps from sleep, inspect per-app caches, or suspend background views on demand.',
+      'Automatic inactivity sleep suspends background tabs to <200 MB while preserving your active logins and persistent cookies.',
+    detail: '',
     image: '/screenshots/3-performance-settings.png',
     alt: 'Aether Nexspace Performance settings panel showing inactivity threshold and memory controls',
     accent: 'emerald',
@@ -180,8 +180,8 @@ export const SCROLL_STORY_CHAPTERS: ScrollStoryChapter[] = [
     tag: 'Local-First Protection',
     title: 'Locked on your hardware. Quiet on your schedule.',
     description:
-      'Optional PIN lock encrypts credentials locally using Electron safeStorage (Windows DPAPI). Configure close-to-tray behavior and Fluent Light or Dark appearance.',
-    detail: 'Zero NSquare accounts, zero cloud telemetry, and strict context-isolated web views.',
+      'Hardware-backed master PIN encryption via Windows DPAPI. 100% on-device with zero vendor cloud tracking.',
+    detail: '',
     image: '/screenshots/4-privacy-security.png',
     alt: 'Aether Nexspace Privacy & Security settings panel showing master PIN configuration, local session storage, and zero telemetry active',
     accent: 'sky',
