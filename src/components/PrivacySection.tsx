@@ -223,10 +223,10 @@ export function PrivacySection({ onOpenPrivacy }: PrivacySectionProps) {
             </button>
           </div>
 
-          {/* Network Path Comparison Diagram */}
-          <div className="relative z-10 mt-6 grid gap-6 lg:grid-cols-2">
+          {/* Network Path Comparison Diagram (Stacked 1 per row) */}
+          <div className="relative z-10 mt-6 grid grid-cols-1 gap-5">
             {/* Direct Aether Route */}
-            <div className="relative overflow-hidden rounded-xl border border-emerald-500/35 bg-gradient-to-b from-[#071718]/70 to-[#040e10]/90 p-5 shadow-[0_0_30px_rgba(16,185,129,0.08)]">
+            <div className="relative overflow-hidden rounded-xl border border-emerald-500/35 bg-gradient-to-b from-[#071718]/70 to-[#040e10]/90 p-5 sm:p-6 shadow-[0_0_30px_rgba(16,185,129,0.08)]">
               {/* Top illuminated line */}
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-80" />
 
@@ -300,7 +300,7 @@ export function PrivacySection({ onOpenPrivacy }: PrivacySectionProps) {
             </div>
 
             {/* Conventional SaaS Workspace Route */}
-            <div className="relative overflow-hidden rounded-xl border border-rose-500/20 bg-rose-950/10 p-5 opacity-80 hover:opacity-100 transition-opacity">
+            <div className="relative overflow-hidden rounded-xl border border-rose-500/20 bg-rose-950/10 p-5 sm:p-6 opacity-85 hover:opacity-100 transition-opacity">
               {/* Top illuminated line */}
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-rose-500/40 to-transparent" />
 
