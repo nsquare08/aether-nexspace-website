@@ -67,6 +67,77 @@
   background-size: 72px 72px;
 }
 
+/* 21st.dev Card Fan Carousel */
+.fan-layout {
+  height: min(34rem, 70vh);
+}
+
+.fan-card {
+  will-change: transform;
+  backface-visibility: hidden;
+  position: absolute;
+  overflow: clip;
+  border-radius: min(1.8rem, 4vh);
+  width: min(19rem, 36vh);
+  height: min(29rem, 60vh);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+}
+
+.fan-card::after {
+  content: "";
+  z-index: 100;
+  pointer-events: auto;
+  height: 4rem;
+  position: absolute;
+  bottom: -4rem;
+  left: 0;
+  right: 0;
+}
+
+@media (max-width: 1024px) {
+  .fan-layout {
+    height: min(30rem, 70vh);
+  }
+  .fan-card {
+    border-radius: min(1.5rem, 4vh);
+    width: min(16.5rem, 32vh);
+    height: min(26rem, 54vh);
+  }
+}
+
+@media (max-width: 768px) {
+  .fan-layout {
+    height: min(27rem, 70vh);
+  }
+  .fan-card {
+    border-radius: min(1.3rem, 3.5vh);
+    width: min(14.5rem, 30vh);
+    height: min(23rem, 50vh);
+  }
+}
+
+@media (max-width: 640px) {
+  .fan-layout {
+    height: min(25rem, 70vh);
+  }
+  .fan-card {
+    border-radius: min(1.1rem, 3vh);
+    width: min(12.5rem, 28vh);
+    height: min(20rem, 46vh);
+  }
+}
+
+@media (max-width: 480px) {
+  .fan-layout {
+    height: min(23rem, 70vh);
+  }
+  .fan-card {
+    border-radius: min(1rem, 2.5vh);
+    width: min(11rem, 26vh);
+    height: min(18rem, 42vh);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto !important;

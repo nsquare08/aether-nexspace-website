@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { CardFanCarousel } from './ui/card-fan-carousel'
 import {
   ShieldCheck,
   Lock,
@@ -128,56 +129,60 @@ export function PrivacySection({ onOpenPrivacy }: PrivacySectionProps) {
         </div>
 
         {/* ================================================================
-            CENTRAL INTERACTIVE VAULT GRID
+            CENTRAL INTERACTIVE VAULT CARD FAN CAROUSEL (21st.dev)
            ================================================================ */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {VAULT_PILLARS.map((pillar) => {
-            const Icon = pillar.icon
-            const isSelected = selectedPillar.id === pillar.id
-
-            return (
-              <button
-                key={pillar.id}
-                type="button"
-                onClick={() => setSelectedPillar(pillar)}
-                className={cn(
-                  'group flex cursor-pointer flex-col justify-between rounded-2xl border p-6 text-left transition-all duration-200',
-                  isSelected
-                    ? 'border-emerald-400 bg-gradient-to-b from-[#0e1c18] to-[#070e10] shadow-[0_0_24px_rgba(16,185,129,0.25)]'
-                    : 'border-white/[0.08] bg-[#080d1a]/70 hover:border-emerald-400/30 hover:bg-[#0c1324]'
-                )}
-              >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <div
-                      className={cn(
-                        'flex h-10 w-10 items-center justify-center rounded-xl border p-2',
-                        isSelected
-                          ? 'border-emerald-400/40 bg-emerald-500/20 text-emerald-300'
-                          : 'border-white/10 bg-white/[0.04] text-slate-400 group-hover:text-emerald-300'
-                      )}
-                    >
-                      <Icon className="h-5 w-5" />
+        <div className="mt-8 sm:mt-12">
+          <CardFanCarousel<VaultPillar>
+            items={VAULT_PILLARS}
+            selectedIndex={VAULT_PILLARS.findIndex((p) => p.id === selectedPillar.id)}
+            onSelect={(pillar) => setSelectedPillar(pillar)}
+            renderCard={(pillar, _idx, isSelected) => {
+              const Icon = pillar.icon
+              return (
+                <div
+                  className={cn(
+                    'group flex h-full w-full flex-col justify-between rounded-[inherit] border p-5 sm:p-6 text-left transition-all duration-300',
+                    isSelected
+                      ? 'border-emerald-400 bg-gradient-to-b from-[#0f1f1a] via-[#091316] to-[#050b0e] shadow-[0_0_30px_rgba(16,185,129,0.3)]'
+                      : 'border-white/[0.1] bg-[#080d1a]/95 backdrop-blur-xl hover:border-emerald-400/40 hover:bg-[#0c1424]'
+                  )}
+                >
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <div
+                        className={cn(
+                          'flex h-10 w-10 items-center justify-center rounded-xl border p-2 transition-colors',
+                          isSelected
+                            ? 'border-emerald-400/50 bg-emerald-500/20 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
+                            : 'border-white/10 bg-white/[0.04] text-slate-400 group-hover:text-emerald-300'
+                        )}
+                      >
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <span className="rounded-md border border-white/10 bg-white/[0.05] px-2 py-0.5 font-mono text-[11px] font-semibold text-slate-400">
+                        {pillar.code}
+                      </span>
                     </div>
-                    <span className="font-mono text-[11px] text-slate-400">{pillar.code}</span>
+
+                    <h3 className="mt-4 sm:mt-5 font-display text-base sm:text-lg font-semibold text-white">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-1 font-mono text-[10px] sm:text-[11px] text-emerald-300">
+                      {pillar.highlight}
+                    </p>
+                    <p className="mt-2.5 sm:mt-3 text-xs leading-relaxed text-slate-300">
+                      {pillar.description}
+                    </p>
                   </div>
 
-                  <h3 className="mt-5 font-display text-lg font-semibold text-white">
-                    {pillar.title}
-                  </h3>
-                  <p className="mt-1 font-mono text-[10px] text-emerald-300">{pillar.highlight}</p>
-                  <p className="mt-3 text-xs leading-relaxed text-slate-300">
-                    {pillar.description}
-                  </p>
+                  <div className="mt-4 border-t border-white/[0.08] pt-3 font-mono text-[10px] text-slate-400">
+                    <span className="text-emerald-400">✓ Verified: </span>
+                    {pillar.evidence}
+                  </div>
                 </div>
-
-                <div className="mt-5 border-t border-white/[0.06] pt-3 font-mono text-[10px] text-slate-400">
-                  <span className="text-emerald-400">✓ Verified: </span>
-                  {pillar.evidence}
-                </div>
-              </button>
-            )
-          })}
+              )
+            }}
+          />
         </div>
 
         {/* ================================================================
