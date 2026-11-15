@@ -1,13 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
-import {
-  ArrowRight,
-  ArrowLeft,
-  Pause,
-  Play,
-  Sparkles,
-} from 'lucide-react'
+import { useState } from 'react'
+import { motion } from 'motion/react'
+import { Sparkles } from 'lucide-react'
 import { cn } from '../lib/utils'
+import { TiltStackScroll } from './ui/tilt-stack-scroll'
 
 // ============================================================================
 // TYPES & CAPABILITY DATA
@@ -263,8 +258,7 @@ function RamSuspensionVisual() {
         <p className="font-mono text-[10px] text-slate-400">
           {isSleeping
             ? '💤 Inactivity timer reached. WebContents renderer unloaded.'
-            : '⚡ Web renderer live. Inactivity countdown active (15m).'
-          }
+            : '⚡ Web renderer live. Inactivity countdown active (15m).'}
         </p>
       </div>
 
@@ -399,194 +393,86 @@ function NotificationVisual() {
 }
 
 // ============================================================================
-// MAIN CAPABILITIES SECTION (Continuous Carousel with 3D Depth)
+// MAIN CAPABILITIES SECTION (21st.dev Tilt Stack Scroll)
 // ============================================================================
 
 export function CapabilitiesSection() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [isHovered, setIsHovered] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  // Auto-scroll carousel ticker
-  useEffect(() => {
-    if (!isPlaying || isHovered) return
-
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % CAPABILITIES.length)
-    }, 4500)
-
-    return () => clearInterval(timer)
-  }, [isPlaying, isHovered])
-
-  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % CAPABILITIES.length)
-  const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + CAPABILITIES.length) % CAPABILITIES.length)
-
   return (
-    <section
-      id="capabilities"
-      className="relative z-10 overflow-hidden border-t border-white/[0.08] bg-[#050711] py-24 sm:py-32"
-    >
-      {/* Background Magic UI Dot Matrix & Ambient Flare */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px] opacity-75"
-        aria-hidden="true"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/3 left-1/2 -z-10 h-[450px] w-[850px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.08)_0%,rgba(168,85,247,0.05)_50%,transparent_75%)] blur-3xl"
-      />
-
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        {/* Section Header */}
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3.5 py-1 font-mono text-[11px] font-medium tracking-[0.14em] text-cyan-300 uppercase">
-              <Sparkles className="h-3.5 w-3.5 text-cyan-400 animate-pulse" aria-hidden="true" />
-              <span>04 · Core Capabilities</span>
-            </div>
-
-            <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-5xl lg:text-[2.85rem] lg:leading-[1.12]">
-              Architected for{' '}
-              <span className="bg-gradient-to-r from-[#38bdf8] via-[#06b6d4] to-[#a78bfa] bg-clip-text text-transparent">
-                absolute desktop flow.
-              </span>
-            </h2>
+    <section id="capabilities" className="relative z-10 border-t border-white/[0.08]">
+      <TiltStackScroll<CapabilityData>
+        cards={CAPABILITIES}
+        height="clamp(720px, 94vh, 920px)"
+        eyebrow={
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3.5 py-1 font-mono text-[11px] font-medium tracking-[0.14em] text-cyan-300 uppercase">
+            <Sparkles className="h-3.5 w-3.5 text-cyan-400 animate-pulse" aria-hidden="true" />
+            <span>04 · Core Capabilities</span>
           </div>
+        }
+        heading={
+          <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-5xl lg:text-[2.85rem] lg:leading-[1.12]">
+            Architected for{' '}
+            <span className="bg-gradient-to-r from-[#38bdf8] via-[#06b6d4] to-[#a78bfa] bg-clip-text text-transparent">
+              absolute desktop flow.
+            </span>
+          </h2>
+        }
+        renderCard={(cap) => (
+          <div className="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-3xl border border-white/[0.12] bg-gradient-to-b from-[#0e1424] via-[#090d18] to-[#060810] p-6 sm:p-8 md:p-10 shadow-[0_24px_60px_rgba(0,0,0,0.7)]">
+            {/* Atmospheric Top Glow */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-cyan-500/15 blur-3xl"
+            />
 
-          {/* Carousel Controls */}
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              onClick={() => setIsPlaying(!isPlaying)}
-              aria-label={isPlaying ? 'Pause carousel auto-play' : 'Resume carousel auto-play'}
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-[#0c101d] text-slate-300 transition hover:border-cyan-400/40 hover:text-cyan-200"
-            >
-              {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            </button>
-
-            <button
-              type="button"
-              onClick={prevSlide}
-              aria-label="Previous capability"
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-[#0c101d] text-slate-300 transition hover:border-cyan-400/40 hover:text-cyan-200"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={nextSlide}
-              aria-label="Next capability"
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-[#0c101d] text-slate-300 transition hover:border-cyan-400/40 hover:text-cyan-200"
-            >
-              <ArrowRight className="h-4 w-4" />
-            </button>
-
-            <div className="ml-2 font-mono text-xs text-slate-400">
-              <span className="font-semibold text-cyan-300">0{currentIndex + 1}</span> / 0{CAPABILITIES.length}
-            </div>
-          </div>
-        </div>
-
-        {/* ================================================================
-            HORIZONTAL 3D SLIDING CAROUSEL
-           ================================================================ */}
-        <div
-          ref={containerRef}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="relative mt-12 overflow-hidden"
-        >
-          {/* Active Featured Card with 3D Depth */}
-          <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
-            {/* Left: Interactive Details & Visual */}
-            <div className="lg:col-span-12">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={CAPABILITIES[currentIndex].id}
-                  initial={{ opacity: 0, x: 40, scale: 0.98 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: -40, scale: 0.98 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-gradient-to-b from-[#0c101e] to-[#070a14] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.7)] sm:p-8"
-                >
-                  {/* Atmospheric Top Glow */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-cyan-500/15 blur-3xl"
-                  />
-
-                  <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
-                    {/* Copy Column */}
-                    <div className="lg:col-span-7">
-                      <div className="flex items-center gap-3">
-                        <span className="rounded bg-cyan-400/10 px-2.5 py-1 font-mono text-[11px] font-semibold text-cyan-300">
-                          {CAPABILITIES[currentIndex].code}
-                        </span>
-                        <span className="font-mono text-[11px] tracking-wider text-slate-400 uppercase">
-                          {CAPABILITIES[currentIndex].tag}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-4 font-display text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-                        {CAPABILITIES[currentIndex].title}
-                      </h3>
-
-                      <p className="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
-                        {CAPABILITIES[currentIndex].oneLiner}
-                      </p>
-
-                      {/* Pill Metrics */}
-                      <div className="mt-6 flex flex-wrap gap-2 border-t border-white/[0.08] pt-5">
-                        {CAPABILITIES[currentIndex].metrics.map((metric) => (
-                          <span
-                            key={metric}
-                            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-[#0f1424] px-3 py-1.5 font-mono text-xs text-slate-200"
-                          >
-                            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
-                            {metric}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Bespoke Interactive Visual Column */}
-                    <div className="h-[260px] lg:col-span-5">
-                      {CAPABILITIES[currentIndex].visualType === 'workspace' && <WorkspaceVisual />}
-                      {CAPABILITIES[currentIndex].visualType === 'multiaccount' && <MultiAccountVisual />}
-                      {CAPABILITIES[currentIndex].visualType === 'ram' && <RamSuspensionVisual />}
-                      {CAPABILITIES[currentIndex].visualType === 'command' && <CommandVisual />}
-                      {CAPABILITIES[currentIndex].visualType === 'crash' && <CrashGuardVisual />}
-                      {CAPABILITIES[currentIndex].visualType === 'notification' && <NotificationVisual />}
-                    </div>
+            <div className="relative z-10 grid h-full gap-6 lg:grid-cols-12 lg:items-center">
+              {/* Copy Column */}
+              <div className="flex flex-col justify-between lg:col-span-7">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <span className="rounded bg-cyan-400/10 px-2.5 py-1 font-mono text-[11px] font-semibold text-cyan-300">
+                      {cap.code}
+                    </span>
+                    <span className="font-mono text-[11px] tracking-wider text-slate-400 uppercase">
+                      {cap.tag}
+                    </span>
                   </div>
-                </motion.div>
-              </AnimatePresence>
+
+                  <h3 className="mt-4 font-display text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
+                    {cap.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
+                    {cap.oneLiner}
+                  </p>
+                </div>
+
+                {/* Pill Metrics */}
+                <div className="mt-6 flex flex-wrap gap-2 border-t border-white/[0.08] pt-4">
+                  {cap.metrics.map((metric) => (
+                    <span
+                      key={metric}
+                      className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-[#0f1424] px-3 py-1.5 font-mono text-xs text-slate-200"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+                      {metric}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bespoke Interactive Visual Column */}
+              <div className="h-[250px] sm:h-[270px] lg:col-span-5">
+                {cap.visualType === 'workspace' && <WorkspaceVisual />}
+                {cap.visualType === 'multiaccount' && <MultiAccountVisual />}
+                {cap.visualType === 'ram' && <RamSuspensionVisual />}
+                {cap.visualType === 'command' && <CommandVisual />}
+                {cap.visualType === 'crash' && <CrashGuardVisual />}
+                {cap.visualType === 'notification' && <NotificationVisual />}
+              </div>
             </div>
           </div>
-
-          {/* Quick Peek Navigation Strip */}
-          <div className="mt-6 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none]">
-            {CAPABILITIES.map((cap, idx) => (
-              <button
-                key={cap.id}
-                type="button"
-                onClick={() => setCurrentIndex(idx)}
-                className={cn(
-                  'flex shrink-0 cursor-pointer items-center gap-2.5 rounded-xl border px-3.5 py-2.5 transition duration-200',
-                  currentIndex === idx
-                    ? 'border-cyan-400 bg-cyan-500/15 text-white shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                    : 'border-white/[0.08] bg-[#090d18] text-slate-400 hover:border-white/20 hover:text-slate-200'
-                )}
-              >
-                <span className="font-mono text-xs font-semibold">{cap.code}</span>
-                <span className="text-xs font-medium">{cap.title}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+        )}
+      />
     </section>
   )
 }

@@ -138,6 +138,84 @@
   }
 }
 
+/* 21st.dev Tilt Stack Scroll */
+.tss-track {
+  position: relative;
+  width: 100%;
+}
+
+.tss-stage {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.tss-rail {
+  width: 80px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.tss-rail i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: #38bdf8;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+.tss-deck {
+  position: relative;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  min-height: 480px;
+  height: 490px;
+}
+
+@media (max-width: 1024px) {
+  .tss-deck {
+    height: 560px;
+  }
+}
+
+@media (max-width: 640px) {
+  .tss-deck {
+    height: 620px;
+  }
+}
+
+.tss-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  transform-origin: 50% 0;
+  will-change: transform;
+  backface-visibility: hidden;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.15) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 35px 80px -25px rgba(0, 0, 0, 0.75);
+}
+
+.tss-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: #050711;
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto !important;
