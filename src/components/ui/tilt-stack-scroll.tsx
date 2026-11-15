@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowDown } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 export interface TiltStackCard {
@@ -17,7 +17,6 @@ export interface TiltStackScrollProps<T = TiltStackCard> {
   height?: string
   snap?: boolean
   className?: string
-  autoPlayInterval?: number
 }
 
 const clamp = (val: number, min: number, max: number) => (val < min ? min : val > max ? max : val)
@@ -61,21 +60,16 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
   heading,
   renderCard,
   height = '100svh',
-  snap = true,
+  snap = false,
   className,
-  autoPlayInterval = 5500,
 }: TiltStackScrollProps<T>) {
   const totalCards = cards.length
   const trackRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLElement | null)[]>([])
   const shadeRefs = useRef<(HTMLDivElement | null)[]>([])
-  const counterRef = useRef<HTMLElement>(null)
-  const railRef = useRef<HTMLElement>(null)
   const triggerRef = useRef<ScrollTrigger | null>(null)
 
   const [activeIndex, setActiveIndex] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [isHovered, setIsHovered] = useState(false)
 
   const scrollToCard = useCallback(
     (targetIndex: number) => {
@@ -98,28 +92,27 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
   )
 
   const handleNext = () => {
-    const nextIdx = (activeIndex + 1) % totalCards
+    const nextIdx = Math.min(activeIndex + 1, totalCards - 1)
     scrollToCard(nextIdx)
   }
 
   const handlePrev = () => {
-    const prevIdx = (activeIndex - 1 + totalCards) % totalCards
+    const prevIdx = Math.max(activeIndex - 1, 0)
     scrollToCard(prevIdx)
   }
 
-  // Auto-play interval
-  useEffect(() => {
-    if (!isPlaying || isHovered || totalCards <= 1) return
+  const handleSkip = useCallback(() => {
+    const track = trackRef.current
+    if (!track) return
+    const rect = track.getBoundingClientRect()
+    const targetScroll = rect.bottom + window.scrollY
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth',
+    })
+  }, [])
 
-    const timer = setInterval(() => {
-      const nextIdx = (activeIndex + 1) % totalCards
-      scrollToCard(nextIdx)
-    }, autoPlayInterval)
-
-    return () => clearInterval(timer)
-  }, [isPlaying, isHovered, activeIndex, totalCards, autoPlayInterval, scrollToCard])
-
-  // GSAP ScrollTrigger Integration
+  // GSAP ScrollTrigger Integration (Scroll-driven only, no automatic timers)
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -146,14 +139,6 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
       if (currentIdx !== lastActive) {
         lastActive = currentIdx
         setActiveIndex(currentIdx)
-        if (counterRef.current) {
-          counterRef.current.textContent = pad2(currentIdx + 1)
-        }
-      }
-
-      if (railRef.current) {
-        const factor = totalCards > 1 ? scrollProgress / (totalCards - 1) : 1
-        railRef.current.style.transform = `scaleX(${factor.toFixed(4)})`
       }
     }
 
@@ -179,24 +164,6 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
     triggerRef.current = trigger
     paint()
 
-    // Entrance animation
-    const ctx = gsap.context(() => {
-      if (reducedMotion) return
-      const firstCard = cardRefs.current[0]
-      if (firstCard) {
-        gsap.from(firstCard, {
-          yPercent: 18,
-          rotateX: 18,
-          scale: 0.92,
-          opacity: 0,
-          duration: 1.4,
-          ease: 'expo.out',
-          clearProps: 'rotateX',
-          onComplete: paint,
-        })
-      }
-    })
-
     const onMotionChange = () => {
       reducedMotion = mediaQuery.matches
       paint()
@@ -207,7 +174,6 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
     return () => {
       mediaQuery.removeEventListener('change', onMotionChange)
       trigger.kill()
-      ctx.revert()
       paint()
     }
   }, [totalCards, snap])
@@ -217,8 +183,6 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
       ref={trackRef}
       className={cn('tss-track relative w-full', className)}
       style={{ height: `calc(${height} * ${Math.max(totalCards, 1)})` }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <section
         className="tss-stage sticky top-0 flex flex-col justify-between overflow-hidden bg-[#050711] py-8 sm:py-12 px-4 sm:px-8"
@@ -236,59 +200,16 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
           className="pointer-events-none absolute top-1/3 left-1/2 -z-10 h-[450px] w-[850px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.08)_0%,rgba(168,85,247,0.05)_50%,transparent_75%)] blur-3xl"
         />
 
-        {/* Section Header with Eyebrow, Heading, and Controls */}
+        {/* Section Header with Eyebrow and Heading (Top-right controls removed) */}
         <div className="relative z-10 mx-auto w-full max-w-7xl">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              {eyebrow}
-              {heading}
-            </div>
-
-            {/* Interactive Player Controls & Counter with Rail */}
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setIsPlaying(!isPlaying)}
-                aria-label={isPlaying ? 'Pause scroll auto-play' : 'Resume scroll auto-play'}
-                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-[#0c101d] text-slate-300 transition hover:border-cyan-400/40 hover:text-cyan-200"
-              >
-                {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-              </button>
-
-              <button
-                type="button"
-                onClick={handlePrev}
-                aria-label="Previous capability"
-                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-[#0c101d] text-slate-300 transition hover:border-cyan-400/40 hover:text-cyan-200"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </button>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                aria-label="Next capability"
-                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-[#0c101d] text-slate-300 transition hover:border-cyan-400/40 hover:text-cyan-200"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </button>
-
-              {/* Progress Counter & Rail */}
-              <div className="ml-2 flex items-center gap-3 font-mono text-xs text-slate-400">
-                <b ref={counterRef} className="font-mono text-sm font-semibold text-cyan-300">
-                  {pad2(activeIndex + 1)}
-                </b>
-                <span>/ {pad2(totalCards)}</span>
-                <span className="tss-rail">
-                  <i ref={railRef} />
-                </span>
-              </div>
-            </div>
+          <div className="max-w-3xl">
+            {eyebrow}
+            {heading}
           </div>
         </div>
 
         {/* Central Tilt-Stacked Deck */}
-        <div className="relative z-10 mx-auto my-auto flex w-full max-w-7xl items-center justify-center py-4">
+        <div className="relative z-10 mx-auto my-auto flex w-full max-w-7xl items-center justify-center py-2 sm:py-4">
           <div className="tss-deck relative flex w-full items-center justify-center">
             {cards.map((card, idx) => {
               const isActive = idx === activeIndex
@@ -321,25 +242,43 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
           </div>
         </div>
 
-        {/* Quick Jump Navigation Strip */}
-        <div className="relative z-10 mx-auto w-full max-w-7xl">
-          <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
-            {cards.map((card, idx) => (
-              <button
-                key={card.id ?? idx}
-                type="button"
-                onClick={() => scrollToCard(idx)}
-                className={cn(
-                  'flex shrink-0 cursor-pointer items-center gap-2.5 rounded-xl border px-3.5 py-2 transition duration-200',
-                  activeIndex === idx
-                    ? 'border-cyan-400 bg-cyan-500/15 text-white shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                    : 'border-white/[0.08] bg-[#090d18] text-slate-400 hover:border-white/20 hover:text-slate-200'
-                )}
-              >
-                <span className="font-mono text-xs font-semibold">{card.code ?? `0${idx + 1}`}</span>
-                <span className="text-xs font-medium">{card.title}</span>
-              </button>
-            ))}
+        {/* Bottom Navigation: Single Button 'Skip' with Left & Right Arrows */}
+        <div className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-center pt-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#090d18]/90 p-1.5 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+            <button
+              type="button"
+              onClick={handlePrev}
+              disabled={activeIndex === 0}
+              aria-label="Previous capability"
+              className={cn(
+                'flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-slate-400 transition hover:bg-white/10 hover:text-white active:scale-95',
+                activeIndex === 0 && 'opacity-35 cursor-not-allowed hover:bg-transparent hover:text-slate-400'
+              )}
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSkip}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-500/15 px-4 py-1.5 font-mono text-xs font-semibold text-cyan-200 transition hover:bg-cyan-500/25 hover:text-white active:scale-95 shadow-[0_0_12px_rgba(6,182,212,0.2)]"
+            >
+              <span>Skip</span>
+              <ArrowDown className="h-3.5 w-3.5 text-cyan-400" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              disabled={activeIndex === totalCards - 1}
+              aria-label="Next capability"
+              className={cn(
+                'flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-slate-400 transition hover:bg-white/10 hover:text-white active:scale-95',
+                activeIndex === totalCards - 1 && 'opacity-35 cursor-not-allowed hover:bg-transparent hover:text-slate-400'
+              )}
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </section>
