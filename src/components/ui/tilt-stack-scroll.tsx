@@ -200,51 +200,15 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
           className="pointer-events-none absolute top-1/3 left-1/2 -z-10 h-[450px] w-[850px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.08)_0%,rgba(168,85,247,0.05)_50%,transparent_75%)] blur-3xl"
         />
 
-        {/* Section Header with Eyebrow and Heading (Top-right controls removed) */}
-        <div className="relative z-10 mx-auto w-full max-w-7xl">
+        {/* Section Header with Eyebrow, Heading, and Controls in Top-Right */}
+        <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
             {eyebrow}
             {heading}
           </div>
-        </div>
 
-        {/* Central Tilt-Stacked Deck */}
-        <div className="relative z-10 mx-auto my-auto flex w-full max-w-7xl items-center justify-center py-2 sm:py-4">
-          <div className="tss-deck relative flex w-full items-center justify-center">
-            {cards.map((card, idx) => {
-              const isActive = idx === activeIndex
-              return (
-                <article
-                  key={card.id ?? idx}
-                  ref={(el) => {
-                    cardRefs.current[idx] = el
-                  }}
-                  className="tss-card"
-                  style={{
-                    zIndex: idx + 1,
-                  }}
-                  aria-roledescription="slide"
-                  aria-label={`${pad2(idx + 1)} of ${pad2(totalCards)}: ${card.title ?? ''}`}
-                >
-                  {/* Darkening Shade Overlay */}
-                  <div
-                    ref={(el) => {
-                      shadeRefs.current[idx] = el
-                    }}
-                    className="tss-shade"
-                  />
-
-                  {/* Card Content Component */}
-                  <div className="relative z-10 h-full w-full">{renderCard(card, idx, isActive)}</div>
-                </article>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Bottom Navigation: Single Button 'Skip' with Left & Right Arrows */}
-        <div className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-center pt-2">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#090d18]/90 p-1.5 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+          {/* Unified Controls: Left Arrow, Skip Button, Right Arrow */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#090d18]/90 p-1.5 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)] shrink-0 self-start sm:self-end">
             <button
               type="button"
               onClick={handlePrev}
@@ -279,6 +243,40 @@ export function TiltStackScroll<T extends TiltStackCard = TiltStackCard>({
             >
               <ArrowRight className="h-4 w-4" />
             </button>
+          </div>
+        </div>
+
+        {/* Central Tilt-Stacked Deck */}
+        <div className="relative z-10 mx-auto my-auto flex w-full max-w-7xl items-center justify-center py-2 sm:py-4">
+          <div className="tss-deck relative flex w-full items-center justify-center">
+            {cards.map((card, idx) => {
+              const isActive = idx === activeIndex
+              return (
+                <article
+                  key={card.id ?? idx}
+                  ref={(el) => {
+                    cardRefs.current[idx] = el
+                  }}
+                  className="tss-card"
+                  style={{
+                    zIndex: idx + 1,
+                  }}
+                  aria-roledescription="slide"
+                  aria-label={`${pad2(idx + 1)} of ${pad2(totalCards)}: ${card.title ?? ''}`}
+                >
+                  {/* Darkening Shade Overlay */}
+                  <div
+                    ref={(el) => {
+                      shadeRefs.current[idx] = el
+                    }}
+                    className="tss-shade"
+                  />
+
+                  {/* Card Content Component */}
+                  <div className="relative z-10 h-full w-full">{renderCard(card, idx, isActive)}</div>
+                </article>
+              )
+            })}
           </div>
         </div>
       </section>
