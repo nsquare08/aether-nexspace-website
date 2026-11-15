@@ -1,17 +1,15 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
 import {
   Sparkles,
   Layers,
   Cpu,
-  Check,
-  X,
   ArrowRight,
   Database,
   Lock,
 } from 'lucide-react'
 import { cn } from '../lib/utils'
 import { STORE_CONFIG } from '../config/store'
+import { CompareRealityReveal } from './CompareRealityReveal'
 
 // ============================================================================
 // ARCHITECTURAL EXPLODED LAYERS DATA
@@ -71,36 +69,8 @@ const STACK_LAYERS: StackLayer[] = [
   },
 ]
 
-// ============================================================================
-// CINEMATIC COMPARISON DATA (The Sprawl vs. The Shell)
-// ============================================================================
-
-const COMPARISONS = [
-  {
-    metric: 'Workspace Model',
-    before: '40+ mixed browser tabs competing in one window',
-    after: '3 structured workspaces with dedicated app rosters',
-  },
-  {
-    metric: 'Multi-Account',
-    before: 'Constant sign-out or multiple incognito windows',
-    after: 'Isolated Chromium partitions run 2 accounts side-by-side',
-  },
-  {
-    metric: 'Memory Usage',
-    before: '2.4+ GB constantly consumed by idle background tabs',
-    after: 'Automatic auto-sleep cuts idle memory to <200 MB total',
-  },
-  {
-    metric: 'Data & Privacy',
-    before: 'Mandatory cloud profiles and behavioral ad tracking',
-    after: 'Zero vendor accounts, zero telemetry, 100% on-device',
-  },
-]
-
 export function IntroSection() {
   const [selectedLayerIndex, setSelectedLayerIndex] = useState(0)
-  const [realityMode, setRealityMode] = useState<'aether' | 'browser'>('aether')
 
   const activeLayer = STACK_LAYERS[selectedLayerIndex]
 
@@ -136,164 +106,9 @@ export function IntroSection() {
         </div>
 
         {/* ================================================================
-            ACT I: INTERACTIVE REALITY COMPARISON (Browser Chaos vs Aether Nexus)
+            ACT I: CINEMATIC COMPARISON REVEAL (Chaos to Aether Nexspace)
            ================================================================ */}
-        <div className="relative mt-16 overflow-hidden rounded-2xl border border-white/[0.1] bg-[#070b16]/90 p-6 shadow-[0_24px_60px_rgba(0,0,0,0.6)] sm:p-8 transition-colors duration-500">
-          {/* Ambient dynamic atmospheric glow */}
-          <div
-            aria-hidden="true"
-            className={cn(
-              'pointer-events-none absolute -top-24 right-1/4 h-64 w-96 rounded-full blur-3xl transition-opacity duration-700',
-              realityMode === 'aether'
-                ? 'bg-cyan-500/10 opacity-100'
-                : 'bg-rose-500/10 opacity-100'
-            )}
-          />
-
-          <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/[0.08] pb-6">
-            <div>
-              <span className="font-mono text-xs tracking-wider text-cyan-400 uppercase">
-                Act I · The Paradigm Shift
-              </span>
-              <h3 className="mt-1 font-display text-xl font-semibold text-white sm:text-2xl">
-                Compare Your Daily Workspace Experience
-              </h3>
-            </div>
-
-            {/* Mode Toggle Switcher with Animated Sliding Pill */}
-            <div className="relative inline-flex rounded-xl border border-white/10 bg-[#0c101e] p-1 shadow-inner">
-              <button
-                type="button"
-                onClick={() => setRealityMode('browser')}
-                className="relative z-10 cursor-pointer rounded-lg px-4 py-2 font-mono text-xs font-semibold transition-colors duration-200"
-                style={{ color: realityMode === 'browser' ? '#fecdd3' : '#94a3b8' }}
-              >
-                {realityMode === 'browser' && (
-                  <motion.span
-                    layoutId="reality-mode-indicator"
-                    className="absolute inset-0 rounded-lg border border-rose-500/50 bg-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.3)]"
-                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
-                  />
-                )}
-                <span className="relative z-10">Browser Chaos</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setRealityMode('aether')}
-                className="relative z-10 cursor-pointer rounded-lg px-4 py-2 font-mono text-xs font-semibold transition-colors duration-200"
-                style={{ color: realityMode === 'aether' ? '#a5f3fc' : '#94a3b8' }}
-              >
-                {realityMode === 'aether' && (
-                  <motion.span
-                    layoutId="reality-mode-indicator"
-                    className="absolute inset-0 rounded-lg border border-cyan-400/60 bg-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.35)]"
-                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
-                  />
-                )}
-                <span className="relative z-10">Aether Nexspace</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Interactive Metric Comparison Cards */}
-          <div className="relative z-10 mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {COMPARISONS.map((comp, idx) => (
-              <motion.div
-                key={comp.metric}
-                initial={false}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                animate={{
-                  borderColor:
-                    realityMode === 'aether'
-                      ? 'rgba(34, 211, 238, 0.35)'
-                      : 'rgba(244, 63, 94, 0.25)',
-                  backgroundColor:
-                    realityMode === 'aether'
-                      ? 'rgba(10, 18, 36, 0.85)'
-                      : 'rgba(22, 10, 18, 0.65)',
-                  boxShadow:
-                    realityMode === 'aether'
-                      ? '0 0 25px rgba(6, 182, 212, 0.12)'
-                      : '0 0 20px rgba(244, 63, 94, 0.06)',
-                }}
-                transition={{ duration: 0.3, delay: idx * 0.03 }}
-                className="relative overflow-hidden rounded-xl border p-4.5 transition-shadow"
-              >
-                {/* Top illuminated subtle border accent */}
-                <div
-                  className={cn(
-                    'absolute top-0 left-0 right-0 h-[2px] transition-all duration-500',
-                    realityMode === 'aether'
-                      ? 'bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80'
-                      : 'bg-gradient-to-r from-transparent via-rose-500/60 to-transparent opacity-50'
-                  )}
-                />
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={cn(
-                        'h-1.5 w-1.5 rounded-full transition-colors duration-300',
-                        realityMode === 'aether'
-                          ? 'bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-pulse'
-                          : 'bg-rose-400/70'
-                      )}
-                    />
-                    <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                      {comp.metric}
-                    </span>
-                  </div>
-
-                  {/* Morphing status icon */}
-                  <AnimatePresence mode="wait" initial={false}>
-                    {realityMode === 'aether' ? (
-                      <motion.div
-                        key="check"
-                        initial={{ scale: 0, rotate: -45, opacity: 0 }}
-                        animate={{ scale: 1, rotate: 0, opacity: 1 }}
-                        exit={{ scale: 0, rotate: 45, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                        className="rounded-full bg-cyan-400/10 p-1 text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.3)]"
-                      >
-                        <Check className="h-3.5 w-3.5 stroke-[2.5]" />
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="cross"
-                        initial={{ scale: 0, rotate: 45, opacity: 0 }}
-                        animate={{ scale: 1, rotate: 0, opacity: 1 }}
-                        exit={{ scale: 0, rotate: -45, opacity: 0 }}
-                        transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                        className="rounded-full bg-rose-500/10 p-1 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.2)]"
-                      >
-                        <X className="h-3.5 w-3.5 stroke-[2.5]" />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* Animated description text */}
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.p
-                    key={realityMode}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.2 }}
-                    className={cn(
-                      'mt-3 min-h-[42px] text-xs leading-relaxed transition-colors',
-                      realityMode === 'aether'
-                        ? 'text-slate-200 font-medium'
-                        : 'text-rose-200/80 line-through opacity-80'
-                    )}
-                  >
-                    {realityMode === 'aether' ? comp.after : comp.before}
-                  </motion.p>
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        <CompareRealityReveal />
 
         {/* ================================================================
             ACT II: 3D EXPLODED ARCHITECTURAL RUNTIME STACK
